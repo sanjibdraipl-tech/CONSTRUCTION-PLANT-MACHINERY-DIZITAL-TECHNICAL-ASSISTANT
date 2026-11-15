@@ -1,0 +1,6 @@
+{
+  "name": "PlantMitra – AI Construction P&M Digital Technical Assistant",
+  "description": "AI-powered Construction Plant & Machinery digital technical assistant for equipment diagnostics, preventive maintenance, breakdown management, KPI dashboards, fuel management, spare inventory, productivity and equipment costing.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

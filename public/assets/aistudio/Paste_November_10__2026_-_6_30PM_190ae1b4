@@ -1,0 +1,3006 @@
+specified minimum capacities/quantities for key equipment, but the exact requirement changes by package, pavement type, EPC/HAM item, project length and contract conditions. For example, one NHAI schedule specifies 200 TPH WMM, 120–140+ TPH hot-mix plants, sensor pavers, 8–10/10-tonne rollers, motor graders and large numbers of tippers; another recent NHAI document includes 250 TPH 3-stage VSI crushing, milling machines, bitumen sprayers, 12 KL water tankers and road-marking machines. NHAI
+1. Complete NHAI Road Machinery System
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Think of the equipment fleet in 10 major groups:
+Group	Major Machinery	Main Purpose
+1. Earthwork	Excavator, Dozer, Loader, Grader, Compactor, Tipper	Formation/embankment
+2. Aggregate	Crusher, Screen, VSI, Cone, Jaw	GSB/WMM/DBM/BC aggregate
+3. GSB	Crusher/WMM system, grader, roller, tanker	Granular sub-base
+4. WMM	WMM plant, loader, paver/grader, roller	Wet Mix Macadam
+5. Bitumen	HMP, bitumen tank, sprayer, tanker	DBM/BC/SMA etc.
+6. Asphalt paving	Sensor paver, rollers, tippers	Bituminous pavement
+7. Concrete	Batching plant, transit mixer, pump, DLC/PQC paver	Rigid pavement/structures
+8. Structures	Crane, piling rig, excavator, pump	Bridges/culverts
+9. Finishing	Milling machine, sweeper, road-marking machine	Finishing/rehabilitation
+10. Support	DG, compressor, tanker, service truck, trailer	Continuous operation
+
+
+The IRC's road-equipment pocket book similarly organizes equipment around activities such as dozer, excavator, grader, crusher, WMM plant, bitumen distributor, HMP, paver, roller, concrete plant and transit mixer. Law Resource
+2. EARTHWORK MACHINERY
+A. Hydraulic Excavator
+Typical highway fleet:
+- 20–22 T excavator
+- 30–35 T excavator
+- 45 T+ excavator for heavy excavation
+- 0.9–1.5 m³ bucket commonly encountered
+Applications
+- Borrow-earth excavation
+- Cutting
+- Embankment
+- Drain excavation
+- Pond excavation
+- Rock excavation with breaker
+- Loading into tippers
+- Structure excavation
+P&M KPIs
+You should monitor:
+
+Excavator productivity
+
+m³/hr = Bucket Capacity × Fill Factor × Cycle Factor × 60 × Availability
+
+For example:
+
+1.2 m³ bucket
+× 0.85 fill factor
+× 0.8 efficiency
+× 60 / 0.5-minute cycle
+
+≈ 98 m³/hr theoretical working productivity
+
+Actual production will be lower depending on hauling distance, operator, material and site conditions.
+Important controls
+- HMR
+- Diesel L/hr
+- Diesel L/m³
+- Bucket cycle time
+- Hydraulic pressure
+- Engine temperature
+- Hydraulic oil temperature
+- Availability %
+- Utilization %
+- Breakdown hours
+- MTBF
+- MTTR
+3. MOTOR GRADER
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+The motor grader is one of the most important NHAI road machines.
+Main applications
+- Formation preparation
+- Subgrade grading
+- GSB spreading/leveling
+- WMM leveling
+- Shoulder work
+- Camber/cross-fall
+- Drainage slope
+- Final trimming
+Typical highway projects may use 150 kW+ graders; NHAI equipment schedules have specified such capacities in several procurements. NHAI
+P&M manager must monitor
+- Blade condition
+- Circle/side-shift
+- Hydraulic system
+- Articulation
+- Transmission
+- Scarifier
+- Cutting-edge wear
+- Tyre condition
+- Diesel consumption
+- Productivity/hr
+4. TIPPERS — THE HIDDEN PRODUCTIVITY DRIVER
+This is extremely important for your future P&M Head/AGM interview.
+
+A road project can have excellent excavators, crushers and HMPs but still lose production because of insufficient tippers.
+Example
+Suppose:
+- HMP = 160 TPH
+- One tipper carries = 20 T
+- Loading = 5 min
+- Travel loaded = 25 min
+- Unloading = 3 min
+- Return = 20 min
+- Waiting = 5 min
+Total cycle ≈ 58 min
+
+One tipper:
+
+20 × 60 / 58 ≈ 20.7 TPH
+
+For 160 TPH:
+
+160 / 20.7 ≈ 7.7
+
+So you need approximately 8 productive tippers, plus contingency.
+
+But if traffic, haul distance or loading delays increase, the requirement increases.
+This is why P&M should calculate:
+Required Tippers = Plant Output × Haul Cycle / Truck Payload / 60
+
+This principle applies to:
+- Crusher → WMM
+- Quarry → WMM
+- HMP → Paver
+- Excavation → Embankment
+- RMC → Structure
+5. CRUSHER PLANT
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+For a major NHAI project, the aggregate system may include:
+
+Primary crushing
+
+Jaw Crusher / Gyratory
+
+↓
+
+Secondary crushing
+
+Cone Crusher
+
+↓
+
+Tertiary
+
+VSI / Cone
+
+↓
+
+Screening
+
+Vibrating Screens
+
+↓
+
+Stockpiles
+Example flow
+Quarry rock
+
+→ Jaw
+
+→ Cone
+
+→ VSI
+
+→ Screen
+
+→ 40 mm / 20 mm / 10 mm / manufactured sand
+
+→ HMP/WMM/RMC
+
+A recent NHAI equipment schedule specifically lists a 250 TPH 3-stage VSI crushing unit and a 100 TPH GSB mobile crusher. NHAI
+Crusher KPIs
+You should know:
+- TPH
+- kWh/T
+- Diesel L/T
+- Availability
+- Utilization
+- CSS
+- Wear rate
+- Liner life
+- Jaw plate life
+- Cone mantle/concave life
+- VSI tip/anvil life
+- Screen efficiency
+- Recirculation %
+- Product gradation
+6. WMM PLANT
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+WMM = Wet Mix Macadam.
+
+Typical system:
+
+Crusher
+
+↓
+
+Aggregate stockpile
+
+↓
+
+WMM bins
+
+↓
+
+Controlled aggregate feeding
+
+↓
+
+Water addition
+
+↓
+
+Pugmill
+
+↓
+
+Discharge conveyor
+
+↓
+
+Tipper
+
+↓
+
+Paver/Grader
+
+↓
+
+Roller
+
+NHAI documents have specified WMM capacities such as 120 TPH and 200 TPH, depending on the package. NHAI
+P&M controls
+- Bin calibration
+- Belt calibration
+- Water flow
+- Moisture %
+- Pugmill condition
+- Mixer blade wear
+- Gearbox
+- Conveyor belt
+- Bearing
+- Motor current
+- TPH
+- Diesel/electricity consumption
+- Material wastage
+For WMM, proper spreading and compaction are critical; highway guidance calls for controlled mixing, uniform spreading and suitable roller compaction. Himachal Pradesh Public Works Department
+7. HOT MIX PLANT — HMP
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+For an NHAI project, HMP is one of the highest-value production assets.
+Major components
+1. Cold aggregate bins
+2. Feeder
+3. Gathering conveyor
+4. Dryer drum
+5. Burner
+6. Hot elevator
+7. Vibrating screen
+8. Hot bins
+9. Weigh hopper
+10. Bitumen weighing system
+11. Filler system
+12. Mixer
+13. Control cabin
+14. Bag filter
+15. Bitumen tanks
+16. Hot-oil system
+17. Compressor
+18. DG/electrical system
+MoRTH guidance emphasizes proper aggregate gradation control, bitumen measurement and mineral-filler feed arrangements in HMPs used for National Highway works. Ministry of Road Transport & Highways
+HMP P&M KPIs
+KPI	Target concept
+Production	TPH
+Availability	>90% desirable
+Utilization	Production hours / available hours
+Fuel	L/T
+Electricity	kWh/T
+Bitumen accuracy	Calibration-based
+Aggregate gradation	Lab controlled
+Temperature	Mix-specification controlled
+Breakdown	Minimum
+MTBF	Increasing
+MTTR	Decreasing
+
+
+8. ASPHALT PAVER
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+This is where production becomes road.
+
+Major components:
+- Hopper
+- Conveyor
+- Auger
+- Screed
+- Hydraulic system
+- Sensor system
+- Grade sensor
+- Slope sensor
+- Tamper
+- Vibrator
+- Heating system
+NHAI schedules have included 9 m hydraulic sensor pavers and pavers capable of around 10 m paving width. NHAI
+Paver P&M controls
+- Screed heating
+- Screed wear
+- Auger wear
+- Conveyor chain
+- Hydraulic oil
+- Sensor calibration
+- Grade control
+- Automatic leveling
+- Hopper operation
+- Paving speed
+9. ROAD ROLLERS
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+You should classify them:
+A. Vibratory soil compactor
+Used for:
+- Embankment
+- Subgrade
+- GSB/WMM
+B. Tandem roller
+Used mainly for:
+- Asphalt
+- Finish rolling
+C. Pneumatic tyre roller
+Important for:
+- Bituminous intermediate rolling
+- Kneading/action
+- Asphalt compaction
+NHAI equipment schedules have specified 8–10 tonne rollers and pneumatic rollers around 8 tonnes or higher depending on the contract. NHAI
+Critical P&M parameters
+- Static weight
+- Vibratory amplitude
+- Frequency
+- Rolling speed
+- Number of passes
+- Drum temperature
+- Tyre pressure
+- Water spray
+- Vibration system
+- Bearing condition
+10. BITUMEN DISTRIBUTOR / SPRAYER
+Used for:
+- Prime coat
+- Tack coat
+- Bitumen/emulsion application
+Important components:
+- Bitumen tank
+- Burner/heating system
+- Pump
+- Spray bar
+- Nozzles
+- Temperature control
+- Flow control
+- Calibration system
+NHAI schedules have included 6-tonne bitumen mechanical sprayers. NHAI
+11. MILLING MACHINE
+Very important for:
+- Rehabilitation
+- Overlay
+- Removing defective asphalt
+- Profile correction
+A recent NHAI schedule includes milling machines among key equipment. NHAI
+P&M monitoring
+- Milling drum
+- Cutting teeth
+- Conveyor
+- Hydraulic system
+- Water spray
+- Drum drive
+- Tooth consumption
+- m²/hr
+- mm depth
+- Diesel L/m²
+12. ROAD SWEEPER
+Used before:
+- Prime coat
+- Tack coat
+- Asphalt paving
+Its importance is often underestimated.
+
+Poor cleaning → poor bonding → pavement failure risk.
+
+IRC equipment guidance identifies road sweepers and air compressors for surface cleaning before bituminous operations. Law Resource
+13. WATER TANKER
+Typical highway project:
+
+12 KL or similar
+
+Applications:
+- Earthwork moisture
+- GSB
+- WMM
+- Roller water
+- Dust suppression
+- Curing
+NHAI equipment schedules have included 12 KL water tankers. NHAI
+Monitor
+Water L/m³
+
+or
+
+Water L/km
+
+depending on activity.
+14. CONCRETE/RIGID PAVEMENT EQUIPMENT
+For rigid pavement/structures:
+Batching plant
+Typical:
+- 30 m³/hr
+- 40 m³/hr
+- 60 m³/hr
+- Higher depending on requirement
+Transit mixer
+Usually 6–10 m³ class.
+Concrete pump
+For:
+- Bridges
+- Viaducts
+- Culverts
+- Structures
+DLC/PQC equipment
+- Concrete batching plant
+- Transit mixers
+- Concrete paver
+- Vibrator
+- Texturing machine
+- Curing system
+- Joint cutter
+- Saw cutter
+NHAI documents have included concrete batching plants, boom pumps and specialized concrete paving equipment in equipment schedules. NHAI
+15. BRIDGE & STRUCTURE MACHINERY
+Because modern NHAI road packages are often road + bridge structures, your P&M knowledge should extend beyond road equipment.
+Major equipment
+Foundation
+- Rotary piling rig
+- Casing oscillator
+- Crane
+- Excavator
+- Bentonite plant
+- Desander
+- Slurry pump
+- Concrete pump
+Superstructure
+- Crane
+- Hydra
+- Launching girder
+- Girder erection equipment
+- Strand jack
+- Hydraulic jack
+- Welding machine
+- Generator
+Concrete
+- Batching plant
+- Transit mixer
+- Boom pump
+- Static pump
+- Needle vibrator
+16. DOZER
+Used for:
+- Earth spreading
+- Embankment
+- Cutting
+- Quarry operations
+- Stockpile management
+For large highway projects, a 200+ HP class dozer may be used depending on earthwork conditions.
+
+Key parameters:
+- Blade capacity
+- Push distance
+- Operating weight
+- Ground pressure
+- Track condition
+- Fuel L/hr
+- Production m³/hr
+17. FRONT-END LOADER
+Typical uses:
+- Aggregate loading
+- HMP feeding
+- WMM feeding
+- Crusher feeding
+- Stockpile management
+Typical bucket:
+
+2–5 m³, depending on machine/application.
+
+One of the biggest mistakes is using an undersized loader for a high-capacity HMP/WMM/crusher.
+18. GSB / SUBGRADE EQUIPMENT CHAIN
+For a typical road section:
+
+Excavator/Dozer
+
+↓
+
+Tipper
+
+↓
+
+Motor Grader
+
+↓
+
+Water Tanker
+
+↓
+
+Vibratory Roller
+
+↓
+
+Testing
+
+↓
+
+Approved layer
+
+The equipment is therefore not managed individually.
+
+You manage the production chain.
+19. WMM EQUIPMENT CHAIN
+Crusher
+
+↓
+
+Stockpile
+
+↓
+
+WMM Plant
+
+↓
+
+Loader
+
+↓
+
+Tipper
+
+↓
+
+Paver / Motor Grader
+
+↓
+
+Water Tanker
+
+↓
+
+Vibratory Roller
+
+↓
+
+Tandem Roller
+
+↓
+
+Density/quality test
+20. DBM/BC EQUIPMENT CHAIN
+This is one of the most important chains for an NHAI P&M manager:
+
+Crusher
+
+↓
+
+Aggregate stockpile
+
+↓
+
+HMP
+
+↓
+
+Hot-mix tipper
+
+↓
+
+Paver
+
+↓
+
+Pneumatic Tyre Roller
+
+↓
+
+Vibratory/Tandem Roller
+
+↓
+
+Finish Roller
+
+↓
+
+Quality testing
+
+The IRC equipment guidance identifies HMP, paver, pneumatic/vibratory/smooth rollers and associated support equipment for bituminous pavement operations. Law Resource
+21. THE MOST IMPORTANT P&M KPIs
+If you want an AGM/Head P&M position, don't just say:
+"I maintain machines."
+
+Say:
+1. Availability
+Availability % = Available Hours / Planned Hours × 100
+2. Utilization
+Utilization % = Running Hours / Available Hours × 100
+3. MTBF
+MTBF = Operating Hours / Number of Failures
+4. MTTR
+MTTR = Repair Hours / Number of Failures
+5. Equipment productivity
+TPH / m³/hr / km/day / m²/hr
+6. Fuel efficiency
+L/hr
+
+and more importantly:
+
+L/T
+
+L/m³
+
+L/km
+7. Cost
+₹/hr
+
+₹/m³
+
+₹/T
+
+₹/km
+22. NHAI P&M MANAGER'S REAL RESPONSIBILITY
+This is especially important for your career target.
+
+A senior P&M manager should control:
+Planning
+- Equipment requirement
+- Equipment deployment
+- Equipment relocation
+- Hiring vs owning
+- Replacement
+- CAPEX
+Production
+- HMP TPH
+- Crusher TPH
+- WMM TPH
+- Earthwork m³
+- Paving TPH
+- Concrete m³
+Maintenance
+- Preventive maintenance
+- Predictive maintenance
+- Breakdown
+- RCA
+- Critical spares
+- Lubricants
+- Tyres
+- Batteries
+Cost
+- Diesel
+- Repairs
+- Tyres
+- Lubricants
+- Spare parts
+- Rental
+- Operator cost
+- Depreciation
+- Cost/hour
+Digital control
+- GPS
+- Telematics
+- ERP
+- SAP PM
+- Excel
+- Power BI
+- Equipment dashboard
+23. EQUIPMENT HIERARCHY YOU SHOULD MASTER
+For your NHAI/AGM interview preparation, I recommend learning these in this order:
+
+LEVEL 1 — Core road equipment
+1. Excavator
+2. Tipper
+3. Dozer
+4. Motor Grader
+5. Loader
+6. Soil Compactor
+7. Water Tanker
+LEVEL 2 — Pavement production
+8. Crusher
+9. WMM Plant
+10. HMP
+11. Bitumen Distributor
+12. Paver
+13. Tandem Roller
+14. PTR
+15. Milling Machine
+LEVEL 3 — Concrete
+16. Batching Plant
+17. Transit Mixer
+18. Concrete Pump
+19. DLC/PQC Paver
+20. Joint Cutter
+LEVEL 4 — Bridge
+21. Piling Rig
+22. Crane
+23. Launching Girder
+24. Hydraulic Jack
+25. DG
+26. Welding/utility equipment
+LEVEL 5 — Management
+27. GPS
+28. Telematics
+29. ERP/SAP PM
+30. Power BI
+31. Cost control
+32. Fleet optimization
+24. Your biggest advantage
+With your long P&M experience, don't compete with younger candidates by trying to become a full-time software engineer.
+
+Your strongest positioning should be:
+"I am a road & construction P&M management professional who understands machinery technically and can now control the fleet through data, ERP, GPS, Excel, Power BI and AI-based decision support."
+
+That is a much stronger NHAI/EPC AGM P&M profile than simply saying "I have 25+ years of machinery experience."
+The next step I recommend
+We can build your “NHAI Road P&M Master Handbook” machine-by-machine, including for each machine:
+
+Specification → Capacity → Components → Working principle → Productivity calculation → Fuel norm → Maintenance schedule → Common breakdown → RCA → Critical spares → Operator checklist → KPI → ₹/hr cost → Interview questions → Excel/Power BI monitoring format.
+
+That would give you a practical AGM/Head P&M interview-ready knowledge system, rather than just a machinery list.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+CAT,TATA,LEYLAND,WITZEN,SANY,MAIT,DYNAPAC,CUMINS,KIRLOSHKER,JCB,ACE,ATLUS CAPCO,XCMG,AMMAN,MAXOMIX,MACONS ORIENTED MACHINERY DEPTH.
+
+
+
+
+
+
+
+
+
+
+
+
+Yes. For your NHAI / EPC Road P&M career, the right approach is to study these brands by machine + application + technical system + maintenance + productivity + cost, not merely memorize model names.
+
+One correction first: I assume “Witzen” = WIRTGEN, “Cumins” = CUMMINS, “Kirloshker” = KIRLOSKAR, “AtlUS Capco” = ATLAS COPCO, and “AmmAn” = AMMANN. I could verify the major brands and equipment families from current manufacturer sources. For MAXOMIX, I could not establish a sufficiently reliable current manufacturer source, so I would not invent model specifications.
+NHAI Road P&M — Brand Master Map
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Brand	Main NHAI relevance	Equipment you should master
+CAT	Earthwork / quarry / grading	Excavator, dozer, grader, loader
+TATA	Haulage	Tippers, trucks, trailers
+Ashok Leyland	Haulage	Tippers, heavy trucks
+WIRTGEN	Road construction specialist	Milling, recycler, stabilizer
+SANY	Road + foundation + concrete	Excavator, grader, paver, roller, piling, crane
+MAIT	Foundation	Rotary piling rigs, CFA, D-wall
+DYNAPAC	Road finishing	Paver, tandem roller, soil compactor
+CUMMINS	Powertrain	Engines, gensets
+KIRLOSKAR	Power/construction	Engines, gensets, pumps
+JCB	Earthwork/general	Excavator, backhoe, loader, compactor
+ACE	Lifting/road/construction	Crane, grader, roller, piling
+ATLAS COPCO	Drilling/compressor	Compressor, drilling, road equipment
+XCMG	Earthwork/road/foundation	Excavator, grader, paver, roller, piling
+AMMANN	Asphalt/compaction	HMP, paver, roller, concrete plant
+MAXOMIX	Needs model-specific verification	Don't assume specifications
+MACONS	Concrete/WMM	Batching, WMM, transit mixer
+
+
+1. CAT — Caterpillar
+CAT should be one of your highest-priority brands.
+
+Caterpillar's India range includes excavators, motor graders, dozers, wheel loaders and off-highway trucks; its current India portfolio also includes the 321/322/324 excavator family and 120/120 GC graders. cat.com
+Major NHAI machines
+Excavator
+- CAT 316
+- CAT 320/321
+- CAT 322
+- CAT 323
+- CAT 324
+- CAT 330
+Motor Grader
+- CAT 120
+- CAT 120 GC
+- CAT 120 NG
+Dozer
+- D5
+- D6
+- D8
+Wheel Loader
+- 950/950 GC class
+- Larger loaders for quarry/aggregate
+What you need to know
+For a CAT excavator:
+
+Engine
+→ fuel system
+→ turbo
+→ cooling
+→ after-treatment
+
+Hydraulic
+→ main pump
+→ pilot pump
+→ main control valve
+→ boom cylinder
+→ arm cylinder
+→ bucket cylinder
+→ travel motors
+→ swing motor
+
+Electrical
+→ ECM
+→ sensors
+→ harness
+→ CAN communication
+CAT interview question
+Excavator is consuming 14 L/hr instead of normal 11 L/hr. What will you check?
+
+Your answer:
+
+Operator → work condition → load → hydraulic pressure → air filter → fuel filter → injector → turbo → exhaust/after-treatment → hydraulic leakage → pump efficiency → sensor/ECM data.
+
+Don't immediately blame the injector.
+
+CAT's current Grade technology also integrates design data, in-cab guidance and automatic controls for grading applications. cat.com
+2. TATA — Tipper/Truck Fleet
+For NHAI, TATA is extremely important because transport productivity determines the productivity of almost every road plant.
+
+Tata's commercial vehicle range includes trucks, tippers and trailers; its current construction range includes LPT/SIGNA and Prima tipper families. Tata Motors
+You should master
+- TATA 1612/1912 class
+- 2518/2821/2823
+- 3123/3125
+- 3521/3523/3525
+- 4225
+- 4830/4832
+- Prima tipper range
+Critical systems
+Engine
+- fuel injection
+- turbocharger
+- cooling
+- lubrication
+Transmission
+- clutch
+- gearbox
+- propeller shaft
+- differential
+- axle
+Vehicle
+- suspension
+- brake
+- steering
+- tyre
+- tipping hydraulic system
+P&M KPI
+Don't measure only:
+Diesel L/hr
+
+Measure:
+L/tonne-km
+
+and:
+₹/tonne-km
+
+This is much more useful for NHAI fleet control.
+3. ASHOK LEYLAND
+Ashok Leyland is another major haulage/tipper fleet brand.
+
+Your technical focus should be:
+- Heavy-duty diesel engine
+- Common rail
+- Turbocharger
+- EGR/after-treatment
+- Clutch
+- Gearbox
+- Differential
+- Brake system
+- Suspension
+- Tipping cylinder
+- PTO
+- Hydraulic pump
+Typical P&M problem
+Tipper not lifting body
+
+Check:
+
+PTO engagement
+↓
+PTO shaft
+↓
+Hydraulic pump
+↓
+Oil level
+↓
+Suction strainer
+↓
+Relief valve
+↓
+Directional/control valve
+↓
+Cylinder
+↓
+Hydraulic hose
+
+This type of logical diagnosis is more valuable in an interview than remembering 20 models.
+4. WIRTGEN — VERY IMPORTANT FOR ROAD REHABILITATION
+WIRTGEN is different from CAT/JCB.
+
+It is a road-specialist equipment group. WIRTGEN's portfolio includes cold milling machines, recyclers/stabilisers, binding-agent spreaders and slipform pavers. The WIRTGEN GROUP in India also covers VÖGELE, HAMM and KLEEMANN, effectively covering processing, mixing, paving, compaction and rehabilitation. wirtgen-group.com
+WIRTGEN family
+WIRTGEN
+- Milling machine
+- Recycler
+- Soil stabilizer
+- Slipform paver
+VÖGELE
+- Asphalt paver
+HAMM
+- Soil compactor
+- Tandem roller
+KLEEMANN
+- Crusher
+- Screening
+This is an extremely important group for NHAI rehabilitation/overlay work.
+Milling machine
+You need to understand:
+- Milling drum
+- Cutting teeth
+- Tooth holders
+- Drum drive
+- Conveyor
+- Water spray
+- Hydraulic system
+- Levelling system
+KPI
+m²/hr
+
+and:
+
+Diesel L/m²
+
+and:
+
+Cutting teeth consumption / m²
+
+That last KPI is very useful for P&M cost control.
+
+WIRTGEN India has been manufacturing equipment in Pune, including HAMM compactors, VÖGELE pavers and KLEEMANN screens/scalpers. wirtgen-group.com
+5. SANY
+SANY is one of the most important brands for your future because it covers earthmoving + road + foundation + concrete + lifting.
+
+Its India portfolio currently includes excavators, cranes, piling rigs, motor graders, pavers, milling machines, compactors, batching plants, transit mixers and concrete pumps. Sany India
+Road machinery
+- Excavator
+- Motor grader
+- Asphalt paver
+- Milling machine
+- Soil compactor
+- Tandem roller
+Foundation
+- SR-series piling rigs
+- Rotary drilling rigs
+- CFA-related equipment
+Concrete
+- Batching plant
+- Transit mixer
+- Boom pump
+- Trailer pump
+Crane
+- Truck crane
+- Crawler crane
+- Rough-terrain crane
+- All-terrain crane
+SANY excavator example
+SY215C-9LC:
+- ~21.4 tonne operating weight
+- 140 HP class engine
+- Cummins engine in the cited current India listing. Sany India
+Your interview advantage
+You can discuss:
+SANY vs CAT vs JCB excavator selection based on fuel consumption, hydraulic performance, dealer support, spare availability, resale value, operator familiarity and ₹/BCM.
+
+That's a P&M Head-level answer.
+6. MAIT — FOUNDATION SPECIALIST
+MAIT is different.
+
+Don't study MAIT as a road roller brand.
+
+Study it as:
+Foundation/Piling equipment.
+
+MAIT's product family includes HR piling rigs from smaller machines through HR 260 and HR 300–570/HR 420–800 classes, plus CFA and micropiling equipment. maitusa.com
+Critical models to know
+- HR 120
+- HR 130
+- HR 180
+- HR 230
+- HR 260
+- HR 300–570
+- HR 420–800
+- CFA rigs
+- MDT series
+HR 260 — very important
+You should understand:
+
+Base carrier
+
+↓
+
+Mast
+
+↓
+
+Rotary head
+
+↓
+
+Kelly bar
+
+↓
+
+Crowd system
+
+↓
+
+Main winch
+
+↓
+
+Auxiliary winch
+
+↓
+
+Hydraulic system
+
+↓
+
+Engine
+
+A published HR 260 specification example lists rotary torque around 260 kNm, 80 m bored depth and 2,600 mm maximum bored diameter, but exact performance depends on configuration/tooling and version. Omnia Machinery
+Piling KPI
+Don't say only:
+"Pile/day."
+
+Track:
+- Bore diameter
+- Depth
+- Drilling minutes
+- Rock/soil strata
+- Kelly length
+- Rotary torque
+- Crowd force
+- Fuel L/hr
+- Fuel L/m
+- Concrete consumption
+- Bentonite consumption
+- Breakdown hours
+- Tool consumption
+7. DYNAPAC
+Dynapac should be your road compaction/paving specialist brand.
+
+Its India operation is based in Pune and covers rollers, pavers and light equipment. dynapac.com
+Learn
+Soil compactor
+- Drum
+- Vibration
+- Eccentric shaft
+- Hydraulic drive
+- Water spray
+Tandem roller
+- Front drum
+- Rear drum
+- Vibration
+- Oscillation depending on model
+- Steering
+- Water system
+Paver
+- Hopper
+- Conveyor
+- Auger
+- Screed
+- Hydraulic system
+- Sensor/levelling system
+Critical KPI
+Compaction passes vs density
+
+The objective is not:
+maximum vibration.
+
+It is:
+required density with minimum passes and minimum fuel/time.
+
+8. CUMMINS
+Cummins is not primarily a "road machine" brand.
+
+It is a powertrain/power-generation specialist.
+
+Cummins India manufactures engines for on-highway and off-highway applications and also has a Power Systems business producing generator systems. Cummins Inc.
+You should master
+- Diesel engine
+- Turbocharger
+- Intercooler
+- Fuel system
+- Common rail
+- ECM
+- Sensors
+- Cooling
+- Lubrication
+- EGR
+- SCR/DEF where applicable
+- DPF where applicable
+Major construction application
+Cummins engine may power:
+- Excavator
+- Loader
+- Piling rig
+- Crane
+- HMP
+- Crusher
+- DG
+- Concrete equipment
+Important diagnostic concept
+Low power
+
+→ air
+→ fuel
+→ turbo
+→ exhaust restriction
+→ injector
+→ compression
+→ sensor
+→ ECM
+→ hydraulic/load condition
+9. KIRLOSKAR
+Kirloskar Oil Engines is particularly important for:
+- DG sets
+- Engines
+- Pumps
+- Construction equipment power
+- Concrete equipment
+KOEL specifically identifies construction applications including earthmovers, material handlers, compactors, pavers, self-loading concrete mixers, concrete pumps and boom pumps, as well as portable/stationary generators. Kirloskar Oil Engines
+P&M knowledge
+For DG:
+
+Engine
+
+→ alternator
+
+→ AVR
+
+→ control panel
+
+→ AMF
+
+→ battery
+
+→ starter
+
+→ fuel system
+
+→ cooling
+Critical DG KPIs
+- kVA
+- kW
+- Load %
+- L/hr
+- L/kWh
+- PF
+- Running hours
+- Battery voltage
+- Coolant temperature
+- Lube oil pressure
+- Frequency
+- Voltage
+10. JCB
+JCB is extremely important in Indian construction.
+
+JCB India currently manufactures a broad range including backhoe loaders, excavators, wheeled loaders and compaction equipment; its India manufacturing footprint includes Ballabgarh and Pune facilities. jcb.com
+Must know
+3DX / backhoe loader
+
+Front:
+
+Loader bucket
+
+Rear:
+
+Excavator attachment
+Excavator
+- 140–220 class machines
+- 20-ton class excavators
+- Larger heavyline machines
+Typical NHAI application
+- Drain
+- Culvert
+- Shoulder
+- Utility
+- Earthwork
+- Loading
+- Site support
+Key JCB diagnostic
+Backhoe hydraulic slow
+
+Check:
+- Hydraulic oil
+- Filter
+- Pump
+- Main relief
+- Pilot pressure
+- Valve
+- Cylinder leakage
+- Hydraulic temperature
+11. ACE
+ACE is especially useful for crane and material handling knowledge.
+
+ACE's portfolio includes mobile cranes, tower cranes, crawler cranes, truck-mounted cranes, backhoe loaders, motor graders, vibratory rollers, piling rigs and concrete placing equipment. Ace Cranes
+NHAI relevance
+Bridge construction
+- Hydra
+- Mobile crane
+- Crawler crane
+- Tower crane
+- Piling equipment
+- Concrete placing boom
+Crane P&M knowledge
+You must understand:
+- SWL
+- Load chart
+- Boom length
+- Radius
+- Counterweight
+- Lifting moment
+- Outrigger
+- Ground bearing
+- Wind speed
+- LMI/RCI
+- Wire rope
+- Sheave
+- Hook block
+Critical rule
+Never select a crane simply by:
+"100-ton crane."
+
+You select based on:
+
+Load + radius + boom configuration + ground condition + lifting height + wind + load chart.
+12. ATLAS COPCO
+Atlas Copco is highly relevant to:
+- Air compressors
+- Drilling
+- Construction
+- Demolition
+- Road-building support
+Atlas Copco India identifies its Power Technique division specifically for construction, demolition and road-building equipment. Atlas Copco
+Learn
+Compressor
+- Air end
+- Screw element
+- Oil separator
+- Air filter
+- Oil filter
+- Cooler
+- Unloader
+- Pressure regulation
+- Engine
+Applications
+- Rock drilling
+- Quarry
+- Piling support
+- Concrete/utility work
+- Pneumatic tools
+KPI
+CFM / m³/min
+
+bar
+
+L/hr
+
+L/m³ air
+13. XCMG
+XCMG is another brand you should learn seriously.
+
+XCMG India has an Indian manufacturing facility and its India portfolio includes excavators, wheel loaders, motor graders, cranes, HDD, foundation equipment and road machinery. XCMG India
+Important families
+Earthmoving
+- Excavators
+- Wheel loaders
+- Graders
+Road
+- Pavers
+- Rollers
+- Milling machines
+Foundation
+- XR rotary drilling rigs
+Lifting
+- Crawler crane
+- Truck crane
+Piling
+Examples seen in the Indian market include:
+- XR145
+- XR175
+- XR210
+- XR240
+- XR280
+- XR330
+- XR360
+- XR440
+- XR450
+Exact specifications must be checked against the particular current configuration rather than relying on generic internet model tables.
+14. AMMANN
+Ammann is one of your highest-priority asphalt-road brands.
+
+Its India portfolio includes:
+- Asphalt plants
+- Concrete plants
+- Asphalt pavers
+- Soil compactors
+- Tandem rollers
+and its Indian business also includes Apollo/Elba products. LinkedIn
+Asphalt plant
+Understand:
+
+Cold bins
+
+↓
+
+Feeder
+
+↓
+
+Dryer
+
+↓
+
+Burner
+
+↓
+
+Hot elevator
+
+↓
+
+Screen
+
+↓
+
+Hot bins
+
+↓
+
+Weighing
+
+↓
+
+Mixer
+
+↓
+
+Bitumen
+
+↓
+
+Filler
+
+↓
+
+Finished mix
+Ammann HMP control
+You should understand:
+- Burner fuel
+- Aggregate moisture
+- Aggregate temperature
+- Bitumen temperature
+- Mix temperature
+- Gradation
+- Bitumen percentage
+- Filler
+- Production TPH
+Ammann's current Indian material also highlights asphalt plants, pavers, soil compactors and tandem rollers; its product information includes models such as ARS 110.2 and ARX 90.2. LinkedIn
+15. MACONS
+For you, MACONS is very important because you already work with RMC/batching equipment.
+
+MACONS' equipment range includes:
+- Stationary batching plants
+- Mobile batching plants
+- WMM plants
+- Self-loading transit mixers
+- Transit mixers
+- Concrete kerbing machines Macons
+Batching plant system
+Aggregate bins
+
+↓
+
+Aggregate gates
+
+↓
+
+Conveyor
+
+↓
+
+Cement
+
+↓
+
+Fly ash/mineral addition where applicable
+
+↓
+
+Water
+
+↓
+
+Admixture
+
+↓
+
+Mixer
+
+↓
+
+Discharge
+Your specific area
+You should become very strong in:
+
+PLC → HMI → sensors → load cells → solenoid valves → pneumatic system → water system → admixture system → cement screw → butterfly gate → mixer → discharge gate.
+
+For your earlier cement/admixture/water delayed discharge and Auto-to-Manual issue, this is exactly the type of system where you should troubleshoot from the sequence logic rather than immediately replacing the PLC.
+16. MAXOMIX — IMPORTANT CAUTION
+I could not reliably verify a current authoritative manufacturer/product source for “MAXOMIX” under that exact spelling.
+
+So I would not give you invented model numbers or specifications.
+
+If you mean a particular Maxomix batching/HMP/WMM/concrete machinery manufacturer, send me:
+- photograph of machine nameplate, or
+- exact company name, or
+- model number.
+Then I can make a machine-specific technical sheet.
+17. HOW YOU SHOULD COMPARE THESE BRANDS
+This is the real AGM P&M level.
+
+Don't ask:
+"Which machine is best?"
+
+Ask:
+Which machine gives the lowest ₹/unit of production at the required quality and availability?
+
+For example:
+Excavator
+CAT vs JCB vs SANY vs XCMG
+
+Compare:
+Parameter	CAT	JCB	SANY	XCMG
+Operating weight	✓	✓	✓	✓
+Engine power	✓	✓	✓	✓
+Bucket	✓	✓	✓	✓
+Fuel L/hr	✓	✓	✓	✓
+Hydraulic performance	✓	✓	✓	✓
+Availability	✓	✓	✓	✓
+MTBF	✓	✓	✓	✓
+MTTR	✓	✓	✓	✓
+Spare cost	✓	✓	✓	✓
+Dealer support	✓	✓	✓	✓
+Resale	✓	✓	✓	✓
+₹/BCM	Final decision	Final decision	Final decision	Final decision
+
+
+18. YOUR MASTER P&M FORMULA
+For every machine you study, use this same template:
+MACHINE MASTER CARD
+1. Make
+
+2. Model
+
+3. Application
+
+4. Operating weight
+
+5. Engine
+
+6. Rated power
+
+7. Hydraulic system
+
+8. Transmission
+
+9. Main components
+
+10. Production capacity
+
+11. Normal fuel consumption
+
+12. Fuel norm
+
+13. Lubricants
+
+14. PM schedule
+
+15. Critical spares
+
+16. Common breakdowns
+
+17. RCA
+
+18. MTBF
+
+19. MTTR
+
+20. Availability
+
+21. Utilization
+
+22. Productivity
+
+23. ₹/hr
+
+24. ₹/unit production
+
+25. GPS/telematics
+
+26. Operator checklist
+
+27. Safety
+
+28. Environmental/DEF/emission system
+
+29. Rental vs ownership
+
+30. Replacement decision
+
+This is the framework I would use for your NHAI Head/AGM P&M preparation.
+19. PRIORITY ORDER FOR YOU
+Don't study all 16 brands equally.
+🔴 PRIORITY 1 — NHAI ROAD
+CAT → TATA → Ashok Leyland → WIRTGEN → SANY → DYNAPAC → AMMANN → XCMG → JCB
+🟠 PRIORITY 2 — BRIDGE/FOUNDATION
+MAIT → SANY → XCMG → ACE → CAT
+🟡 PRIORITY 3 — PLANT/POWER
+MACONS → AMMANN → CUMMINS → KIRLOSKAR → ATLAS COPCO
+🟢 PRIORITY 4 — SPECIALIST
+MAXOMIX after you confirm exactly which manufacturer you mean.
+The most important point for your career
+You don't need to become an expert mechanic on every model.
+
+For an AGM/Sr. Manager P&M position, your knowledge should operate at four levels:
+
+LEVEL 1 — Machine
+How does it work?
+
+LEVEL 2 — Maintenance
+Why does it fail?
+
+LEVEL 3 — Productivity
+How much can it produce?
+
+LEVEL 4 — Management
+What is its ₹/hour, ₹/m³, ₹/tonne, availability, utilization and lifecycle cost?
+
+That fourth level is what separates a Senior P&M Manager/AGM candidate from a workshop engineer.
+
+If you want to make this into a serious study system, the next logical document is a “NHAI P&M 16-Brand Technical Master Handbook” with CAT 320/323/330, Tata/Ashok Leyland tippers, Wirtgen/Vögele/Hamm, SANY, MAIT HR-180/260, Dynapac, Cummins, Kirloskar, JCB, ACE, Atlas Copco, XCMG, Ammann and Macons—including specifications, systems, PM schedules, breakdown/RCA, fuel norms, productivity calculations, critical spares and 100+ interview questions.
+
+
+
+
+
+
+
+
+
+
+
+Ad
+Ad options
+
+
+
+Learn more
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+BRIDGE MAKING ORIENTED MAKING MACHINERY TOWER CRANE,CRANES(CRAWLER,TELESCOPIC) FOR ERECTION,AUTO LOUNCHING MACJNERY BRIDGECON,AP CRANE GANTRY CRANE,PILING DETAILS,STRESSING DETAILS,TANDEMLIGTING DETAILS,LIFTER IN DETAILS DEPTH.JACK OF BARGE,PULLER,TRAILER IN DETAILS DEPTH.
+
+
+
+
+
+
+
+
+
+
+
+
+For NHAI / large EPC bridge projects, this is the next level of P&M knowledge you should develop. The key is to understand not only the machine, but how the entire erection system works together: piling → pier construction → bearing → girder/segment production → transportation → lifting → launching → stressing → deck → finishing.
+
+Current IRC/MoRTH material is especially relevant here. IRC now lists IRC:SP:104-2024 for fabrication/erection of steel bridges, IRC:SP:143-2024 for steel-concrete composite box-girder superstructures, and IRC:SP:144-2024 for steel-bridge detailing. IRC also treats formwork and temporary structures as a dedicated bridge technical committee area. Indian Red Cross Society
+NHAI BRIDGE P&M MASTER SYSTEM
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Think of bridge machinery in 12 systems:
+1. Foundation / Piling
+2. Pier & pier-cap construction
+3. Girder/segment casting
+4. Girder transportation
+5. Crane lifting
+6. Tandem lifting
+7. Launching girder / auto-launching
+8. Gantry erection
+9. Segmental bridge erection
+10. Prestressing / stressing
+11. Hydraulic jacking & lifting
+12. Barge / river-crossing equipment
+1. PILING MACHINERY — COMPLETE SYSTEM
+For NHAI bridges, piling is often the first major mechanized activity.
+Main equipment
+A. Rotary piling rig
+Typical machines:
+- MAIT
+- SANY
+- XCMG
+- Bauer
+- Casagrande
+- Soilmec
+Main components:
+
+Carrier
+
+→ Engine
+
+→ Hydraulic system
+
+→ Mast
+
+→ Rotary head
+
+→ Kelly bar
+
+→ Kelly tools
+
+→ Crowd system
+
+→ Main winch
+
+→ Auxiliary winch
+
+→ Casing system
+
+→ Control system
+Critical parameters
+Parameter	Why important
+Rotary torque	Cutting/drilling capability
+Kelly bar length	Maximum drilling depth
+Maximum diameter	Pile size
+Crowd force	Tool penetration
+Main winch capacity	Tool/casing handling
+Engine power	Overall performance
+Hydraulic flow	Machine response
+Fuel L/hr	Cost
+Fuel L/m	Drilling efficiency
+
+
+2. PILING PRODUCTION CALCULATION
+Don't tell an interviewer:
+"Our piling rig can drill 20 m/day."
+
+Instead explain the cycle.
+One pile cycle
+Positioning
+
+↓
+
+Boring
+
+↓
+
+Cleaning
+
+↓
+
+Casing
+
+↓
+
+Reinforcement cage
+
+↓
+
+Tremie pipe
+
+↓
+
+Concrete
+
+↓
+
+Extraction
+
+↓
+
+Relocation
+P&M KPI
+Pile production
+
+m/day
+
+or
+
+m/pile
+
+or
+
+pile/day
+
+But also:
+
+Fuel
+
+L/m
+
+Cost
+
+₹/m
+
+Availability
+
+%
+
+MTBF
+
+hours/failure
+
+MTTR
+
+hours/repair
+
+This is how a P&M Head should control piling.
+3. PILING — BENTONITE SYSTEM
+For bored cast-in-situ piles, you may also have:
+- Bentonite tank
+- Mixing tank
+- Agitator
+- Desander
+- Slurry pump
+- Storage tank
+- Return line
+- Mud pump
+The system is:
+
+Bentonite preparation
+
+→ storage
+
+→ circulation
+
+→ borehole
+
+→ return slurry
+
+→ desander
+
+→ reuse/disposal.
+
+P&M must monitor:
+- Pump condition
+- Agitator
+- Pipeline
+- Valves
+- Desander
+- Generator
+- Electrical panels.
+4. CASING EQUIPMENT
+Depending on ground conditions:
+Temporary casing
+Can be installed using:
+- Casing oscillator
+- Casing rotator
+- Rotary rig
+- Crane
+- Vibro hammer
+P&M knowledge
+You need to understand:
+
+Casing diameter
+
+Casing length
+
+Casing weight
+
+Torque
+
+Crowd force
+
+Vibration
+
+Ground resistance
+
+This becomes very important in river/soft-soil bridge foundations.
+5. CRANES — THREE MAIN CATEGORIES
+For bridge erection, separate cranes into:
+1. Crawler crane
+2. Telescopic/mobile crane
+3. Tower crane
+And then separately:
+4. Gantry/portal erection system
+5. Launching girder
+These are not interchangeable.
+6. CRAWLER CRANE — DEEP KNOWLEDGE
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Crawler crane is ideal where:
+- Heavy lifting
+- Large radius
+- Long boom
+- Rough/temporary site
+- Repeated erection
+- High lifting capacity
+Major components
+Crawler undercarriage
+
+→ crawler tracks
+
+→ travel motors
+
+→ sprocket/idler
+
+→ upper frame
+
+→ slew ring
+
+→ counterweight
+
+→ boom
+
+→ luffing system
+
+→ main winch
+
+→ auxiliary winch
+
+→ hook block
+
+→ LMI/RCI system
+P&M manager must know
+Load chart
+
+Boom length
+
+Working radius
+
+Lift height
+
+Counterweight
+
+Ground bearing pressure
+
+Wind limit
+
+Hook block weight
+
+Rigging weight
+
+Actual load
+7. CRANE LIFTING CAPACITY — IMPORTANT
+Never say:
+"100-ton crane can lift 100 tonnes everywhere."
+
+Wrong.
+
+Actual capacity depends on:
+
+Radius + boom length + boom configuration + counterweight + ground condition + load chart.
+
+For example, a crane may lift a heavy girder at a short radius but have drastically lower permissible capacity at a long radius.
+Total lifted load
+You must include:
+
+Girder
+-
+Lifting beam/spreader
+-
+Slings
+-
+Shackles
+-
+Hook block
+-
+Other suspended equipment
+
+The crane configuration and load chart must govern the actual lift.
+8. TELESCOPIC CRANE
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Also called:
+- Mobile crane
+- Hydraulic crane
+- Truck crane
+- All-terrain crane
+- Rough-terrain crane
+depending on configuration.
+Main components
+- Carrier
+- Engine
+- Transmission
+- Outriggers
+- Slewing system
+- Telescopic boom
+- Hydraulic cylinders
+- Main winch
+- Hook
+- Counterweight
+- LMI/RCI
+Advantages
+Fast mobilization.
+
+Good for:
+- Girder erection
+- Pier-cap lifting
+- Rebar cages
+- Formwork
+- Segment handling
+- Small/medium heavy lifts.
+9. TOWER CRANE
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Tower crane is generally used where you need:
+
+height + repeated lifting + fixed work zone.
+Main components
+- Foundation/base
+- Mast
+- Slewing unit
+- Counter-jib
+- Main jib
+- Trolley
+- Hoist
+- Hook block
+- Counterweights
+- Electrical control
+- Limit switches
+- Load moment/overload protection
+Critical P&M parameters
+- Maximum load
+- Tip load
+- Maximum radius
+- Jib length
+- Hook height
+- Foundation reaction
+- Wind speed
+- Tie arrangement
+- Climbing arrangement
+For bridge projects, tower cranes are more common around large piers, station/viaduct construction, complex structures and repetitive lifting, rather than as a universal girder-erection machine.
+10. TANDEM LIFTING — VERY IMPORTANT
+You wrote "Tandem lifting."
+
+This means lifting one heavy/long load using two or more cranes simultaneously.
+
+Example:
+
+Girder = 80 tonnes
+
+Crane A + Crane B
+
+But you must NOT simply divide:
+
+80 ÷ 2 = 40 tonnes each
+
+That is unsafe as a planning method.
+
+Because actual load share changes due to:
+- Centre of gravity
+- Crane position
+- Radius
+- Boom geometry
+- Sling angle
+- Differential movement
+- Ground settlement
+- Crane response
+- Load transfer during rotation.
+Tandem lift system
+Crane A
+
+↘
+
+Spreader / Girder
+
+↗
+
+Crane B
+Critical P&M requirement
+Before lifting:
+- Lift plan
+- Crane load charts
+- Ground verification
+- Rigging calculation
+- Centre of gravity
+- Communication protocol
+- Wind limit
+- Exclusion zone
+- Emergency stop procedure
+- Trial lift.
+This should be treated as an engineered lifting operation, not normal crane work.
+11. GANTRY CRANE
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Gantry systems are extremely important for segmental/precast bridge erection.
+
+Basic arrangement:
+
+Main girder
+
+↓
+
+Hoisting system
+
+↓
+
+Trolley
+
+↓
+
+Segment
+
+↓
+
+Bridge deck/pier support
+Types
+- Overhead gantry
+- Underslung gantry
+- Overdeck gantry
+- Launching gantry
+- Portal/gantry erection system
+Major components
+- Main truss
+- Front leg
+- Rear leg
+- Hoist
+- Winch
+- Trolley
+- Hydraulic cylinders
+- Pin/locking system
+- Travel system
+- Electrical panel
+- Control system.
+12. AUTO LAUNCHING MACHINERY / LAUNCHING GIRDER
+This is one of the most important bridge P&M subjects for you.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+A launching girder/launching gantry allows girders or segments to be erected across spans without placing a large crane below the bridge.
+
+A typical NHAI bridge launching sequence can involve:
+
+Launching girder
+
+→ front support leg
+
+→ rear support leg
+
+→ temporary support/fixity
+
+→ segment erection
+
+→ stressing
+
+→ advancement to next span.
+
+An NHAI DPR example explicitly shows a launching girder with front/rear support legs and staged segment erection and stressing. NHAI
+Main components
+Main truss
+
+Front leg
+
+Rear leg
+
+Middle support
+
+Hoisting trolley
+
+Winches
+
+Hydraulic cylinders
+
+Travel mechanism
+
+Anchoring system
+
+Electrical control
+
+Safety/limit systems
+13. LAUNCHING GIRDER WORKING PRINCIPLE
+Suppose:
+
+P1 — P2 — P3 — P4
+Position 1
+Launcher spans:
+
+P1 → P2
+Erect segments
+Segments are lifted.
+Stressing
+Required cables are stressed.
+Launcher moves
+Front leg moves toward P3.
+Rear leg follows.
+New span
+Launcher becomes:
+
+P2 → P3
+
+Then erection continues.
+
+This is why the equipment is called a launching system.
+14. LAUNCHING GIRDER — P&M MANAGER CHECKLIST
+Before operation:
+Structural
+- Approved design
+- Load calculation
+- Temporary support
+- Pier capacity
+- Bearing condition
+- Launching sequence
+- Wind limits
+Mechanical
+- Hydraulic cylinders
+- Hydraulic hoses
+- Pins
+- Bolts
+- Winches
+- Wire ropes
+- Sheaves
+- Bearings
+- Gearboxes
+- Travel motors
+Electrical
+- Main panel
+- Motors
+- Limit switches
+- Emergency stop
+- Communication
+- Sensors
+Safety
+- Load indicator
+- Limit protection
+- Mechanical locking
+- Anti-fall system
+- Walkways
+- Handrails
+- Lighting
+- Wind monitoring.
+IRC guidance specifically recognizes the importance of construction-stage loads from launching girders, trusses, temporary prestressing frames, equipment and counterweights; these loads have to be considered in construction-stage design. Indian Red Cross Society
+15. BRIDGECON / LAUNCHING EQUIPMENT
+If by "BRIDGECON" you mean a particular manufacturer/model or a bridge erection/launching system, I would need the exact model/name to give you its model-specific specifications.
+
+For a generic bridge launching system, learn:
+
+Launching girder
+
+→ hydraulic launch
+
+→ support legs
+
+→ trolley
+
+→ hoist
+
+→ segment handling
+
+→ temporary anchoring
+
+→ locking
+
+→ span launching.
+
+Don't mix a manufacturer's proprietary launching system with the generic term "launching girder."
+16. AP CRANE / A-FRAME CRANE
+If your "AP crane" means A-frame/portal-type lifting equipment, its concept is:
+
+Two vertical supports
+
+↓
+
+Top beam
+
+↓
+
+Hoist/trolley
+
+↓
+
+Load
+
+It is useful for:
+- Segment handling
+- Precast lifting
+- Girder handling
+- Yard operations
+- Assembly/disassembly.
+If AP Crane means a specific manufacturer's machine, give me its exact model/photo and I will treat it separately.
+17. STRESSING EQUIPMENT — VERY IMPORTANT
+Now we come to prestressing.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Main equipment
+- Hydraulic stressing jack
+- Hydraulic pump
+- Pressure gauge
+- Load cell
+- Anchorage
+- Wedges
+- Bearing plate
+- Tendon
+- Duct
+- Grouting pump
+- Grout mixer
+- Grout pressure gauge
+- Measuring equipment.
+System
+Hydraulic pump
+
+↓
+
+High-pressure hose
+
+↓
+
+Stressing jack
+
+↓
+
+Anchor
+
+↓
+
+Tendon
+
+↓
+
+Girder
+18. STRESSING — BASIC PRINCIPLE
+For post-tensioning:
+
+Concrete member
+
+→ duct
+
+→ tendon
+
+→ anchorage
+
+→ jack pulls tendon
+
+→ tendon elongates
+
+→ wedges/anchor lock tendon
+
+→ hydraulic pressure released
+
+→ tendon transfers compressive force into concrete.
+Critical measurements
+You must compare:
+
+Calculated elongation
+
+vs
+
+Actual elongation
+
+and:
+
+Calculated pressure/load
+
+vs
+
+Actual pressure/load
+
+The exact acceptance criteria must come from the approved design/method statement/specification—not from a generic percentage rule.
+19. STRESSING P&M MANAGER MUST CONTROL
+Equipment
+- Jack calibration
+- Pump calibration
+- Pressure gauge calibration
+- Hose condition
+- Coupler condition
+- Anchorage
+- Wedges
+Documentation
+- Jack serial number
+- Pump serial number
+- Gauge serial number
+- Calibration certificate
+- Tendon number
+- Strand count
+- Stressing force
+- Elongation
+- Date/time
+- Operator
+- Engineer approval.
+MoRTH's current revision material includes requirements concerning prestressing/stressing beds and their ability to withstand the total tensioning force; it also emphasizes controlled handling and movement of prestressed girders. Indian Red Cross Society
+20. STRESSING — RCA EXAMPLE
+Suppose:
+
+Required elongation = 150 mm
+
+Actual:
+
+110 mm
+
+Do NOT simply increase pump pressure.
+
+Investigate:
+1. Wrong free length?
+2. Wrong strand length?
+3. Friction higher than expected?
+4. Anchorage seating?
+5. Duct profile?
+6. Strand obstruction?
+7. Jack calibration?
+8. Pressure gauge error?
+9. Strand slip?
+10. Wrong calculation/input?
+This is engineering-controlled work.
+21. HYDRAULIC LIFTER
+Hydraulic lifters are used for:
+- Girder lifting
+- Bridge launching
+- Temporary support
+- Jacking
+- Alignment
+- Bearing replacement
+- Heavy equipment positioning.
+Main system
+Hydraulic power pack
+
+↓
+
+Pump
+
+↓
+
+Control valve
+
+↓
+
+Pressure relief
+
+↓
+
+High-pressure hose
+
+↓
+
+Hydraulic cylinder
+
+↓
+
+Load.
+Important parameters
+- Rated capacity
+- Stroke
+- Pressure
+- Flow
+- Cylinder area
+- Synchronization
+- Mechanical locking
+- Load holding.
+22. SYNCHRONIZED HYDRAULIC LIFTING
+This is much more advanced.
+
+Suppose:
+
+Girder = 300 tonnes
+
+Four hydraulic jacks:
+
+Jack 1
+Jack 2
+Jack 3
+Jack 4
+
+If one jack lifts faster:
+
+the girder becomes tilted.
+
+Therefore:
+
+PLC/control system
+
+monitors:
+- Position
+- Pressure
+- Load
+and adjusts each cylinder.
+Example
+J1 = 75 T
+J2 = 75 T
+J3 = 75 T
+J4 = 75 T
+
+But actual distribution may not remain equal.
+
+The system therefore requires engineered load distribution and synchronized control.
+23. JACKING OF BARGE
+For bridge work across rivers, barge-mounted lifting/jacking systems can be extremely useful.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Typical arrangement:
+
+Barge
+
+↓
+
+Hydraulic power pack
+
+↓
+
+Jacks
+
+↓
+
+Temporary lifting frame
+
+↓
+
+Girder/segment
+Critical issue
+A barge is not a normal land platform.
+
+You must consider:
+- Barge displacement
+- Draft
+- Stability
+- Centre of gravity
+- Ballasting
+- Tide
+- Current
+- Wind
+- Wave action
+- Mooring
+- Load transfer
+- Freeboard
+- Jacking sequence.
+P&M responsibility
+Before lifting:
+
+Load calculation
+-
+Barge stability
+-
+Mooring plan
+-
+Weather/wind/current limits
+-
+Emergency recovery plan
+
+must be established by the responsible engineering/marine team.
+24. PULLER
+"Puller" can mean several different machines in bridge construction.
+A. Hydraulic strand puller
+Used for:
+- Strand handling
+- Tendon installation
+- Cable pulling.
+B. Wire-rope puller
+Used for:
+- Girder positioning
+- Launcher movement
+- Heavy equipment positioning
+- Temporary pulling.
+C. Winch
+Used for:
+- Launching
+- Towing
+- Positioning
+- Material handling.
+Main parameters
+- Pulling capacity
+- Rope diameter
+- Rope length
+- Line speed
+- Drum capacity
+- Brake capacity
+- Motor power
+- Gear ratio
+- D/d ratio
+- Rope safety factor.
+Never select a puller only by:
+"10-ton puller."
+
+You must know:
+
+line pull + rope configuration + reeving + anchorage + friction + required travel.
+25. TRAILER — BRIDGE GIRDER TRANSPORT
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+This is another very important P&M subject.
+Types
+- Low-bed trailer
+- Hydraulic modular trailer
+- Multi-axle trailer
+- Girder trailer
+- SPMT
+- Self-propelled modular transporter.
+For large girders
+You need to calculate:
+
+Girder weight
+-
+Trailer weight
+-
+Auxiliary equipment
+
+↓
+
+Total gross weight
+
+Then:
+- axle load
+- bridge capacity
+- road capacity
+- turning radius
+- gradient
+- clearance
+- route survey.
+26. SPMT — VERY ADVANCED
+SPMT = Self-Propelled Modular Transporter.
+
+It can be used for:
+- Heavy bridge girders
+- Steel structures
+- Large precast segments
+- Launching equipment
+- Heavy industrial structures.
+Main system
+Power pack
+
+↓
+
+Hydraulic drive
+
+↓
+
+Hydraulic suspension
+
+↓
+
+Modular axle lines
+
+↓
+
+Steering system
+
+↓
+
+Electronic control
+Advantages
+- Multi-directional movement
+- Very high load capability
+- Individual hydraulic suspension
+- Precise positioning.
+For very large bridge elements, SPMT can be more appropriate than conventional trailer transport, but the choice is project-specific.
+27. GIRDER TRANSPORT → ERECTION COMPLETE CHAIN
+You should memorize this sequence:
+
+Girder Casting Yard
+
+↓
+
+Curing
+
+↓
+
+Prestressing
+
+↓
+
+Girder de-tensioning/release as approved
+
+↓
+
+Inspection
+
+↓
+
+Storage
+
+↓
+
+Lifting
+
+↓
+
+Trailer/SPMT
+
+↓
+
+Route transportation
+
+↓
+
+Temporary storage
+
+↓
+
+Crane/Launching Girder
+
+↓
+
+Bearing
+
+↓
+
+Erection
+
+↓
+
+Diaphragm
+
+↓
+
+Deck slab
+
+↓
+
+Stressing/closure where applicable
+
+↓
+
+Waterproofing
+
+↓
+
+Wearing course
+
+↓
+
+Crash barrier
+
+↓
+
+Finishing.
+
+A current MoRTH standard drawing example specifies staged girder casting, lifting, transportation/erection, deck/diaphragm work and later stress checks, illustrating why construction sequence is itself a major engineering control. Ministry of Road Transport & Highways
+28. COMPLETE BRIDGE ERECTION EQUIPMENT MATRIX
+Activity	Main machine
+Piling	Rotary piling rig
+Casing	Oscillator/rotator
+Bentonite	Mixing/desanding plant
+Excavation	Excavator
+Rebar cage	Crane
+Concrete	Batching + TM + pump
+Pier	Formwork + crane
+Pier cap	Crane + hydraulic system
+Girder casting	Casting bed + stressing
+Girder lifting	Crawler/mobile crane
+Girder transport	Trailer/SPMT
+Girder erection	Crane/launcher
+Segment erection	Launching gantry
+Heavy lift	Crawler crane
+Tandem lift	2+ cranes
+Steel erection	Crane + winch
+Deck	Concrete pump
+Prestressing	Hydraulic stressing jack
+Grouting	Grout pump
+Bearing installation	Hydraulic jack
+Heavy alignment	Hydraulic lifter
+River erection	Barge + crane/jack
+Launching	Launching girder
+Finishing	Small cranes/MEWP/etc.
+
+
+29. YOUR P&M HEAD CONTROL SHEET
+For every major bridge machine, maintain:
+MACHINE
+Make
+Model
+Serial No.
+Year
+Capacity
+Project
+Location  
+UTILIZATION
+Opening HMR
+Closing HMR
+Running hours
+Idle hours
+Breakdown hours
+Availability
+Utilization  
+FUEL
+Diesel
+L/hr
+L/m
+L/pile
+L/tonne
+L/lift  
+MAINTENANCE
+PM due
+PM completed
+Breakdown
+RCA
+MTBF
+MTTR  
+SAFETY
+Load chart
+Calibration
+Lifting gear inspection
+Wire rope inspection
+Hydraulic hose inspection
+Limit switch
+Emergency stop
+Operator competency  
+COST
+Rental
+Diesel
+Operator
+Spare
+Lubricant
+Tyre
+Repair
+Depreciation  
+
+Total ₹/productive hour
+30. THE FIVE BRIDGE MACHINES I WOULD PRIORITIZE FOR YOU
+For your NHAI/AGM P&M interview, don't try to master everything simultaneously.
+LEVEL 1 — PILING
+MAIT / SANY / XCMG
+
+Learn:
+Rotary rig + Kelly + hydraulic + productivity + fuel + breakdown.
+
+LEVEL 2 — HEAVY LIFTING
+Crawler + telescopic crane
+
+Learn:
+Load chart + radius + boom + counterweight + ground bearing + rigging.
+
+LEVEL 3 — LAUNCHING
+Launching girder / auto-launcher
+
+Learn:
+Front leg + rear leg + trolley + hydraulic launch + locking + span sequence.
+
+LEVEL 4 — PRESTRESSING
+Stressing jack + pump + anchorage + grout
+
+Learn:
+Pressure + elongation + calibration + friction + anchorage + documentation.
+
+LEVEL 5 — HEAVY TRANSPORT/LIFTING
+SPMT + modular trailer + barge + hydraulic lifter
+
+Learn:
+Axle load + stability + synchronized lifting + route + marine stability.
+
+The most important distinction for you
+As a Senior/AGM P&M candidate, don't present yourself as the person who merely operates these machines.
+
+Your responsibility is:
+
+PLAN → SELECT → DEPLOY → CALCULATE → INSPECT → MAINTAIN → CONTROL → OPTIMIZE → REPORT.
+
+For example, if management says:
+“We have a 120-ton precast girder to erect over a 35-m span. How will you plan the operation?”
+
+Your answer should naturally move through:
+
+Girder weight → C.G. → lifting points → crane/launcher selection → radius → load chart → ground bearing → lifting accessories → tandem/single lift → transport → temporary support → bearing → erection sequence → wind limit → communication → trial lift → final lift → documentation.
+
+That is P&M Head-level bridge knowledge.
+
+One important point: crane capacities, lifting accessories, launching-girder configuration, prestressing force, jack capacity and barge stability are engineered values—not generic rules of thumb. The approved lifting/erection method statement, manufacturer's load charts, structural calculations and project specifications must govern the actual operation. NHAI's technical schedule also requires erection plant/equipment capacity and suitability to be acceptable to the Engineer. NHAI
+
+If you want, I can next build Part-2 as a machine-by-machine technical handbook covering MAIT HR260 → SANY/XCMG piling → 100/200/300/500T crawler crane → 50/100/200/500T telescopic crane → tower crane → tandem lifting → launching girder → Bridgecon/segment launcher → AP/A-frame gantry → stressing jack → hydraulic lifter → barge jack → winch/puller → SPMT/trailer, with components, working principle, capacity selection, productivity, fuel, PM schedule, common breakdown/RCA and 100 interview questions.
