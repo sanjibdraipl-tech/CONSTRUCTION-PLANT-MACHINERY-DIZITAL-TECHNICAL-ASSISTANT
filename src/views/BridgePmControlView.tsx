@@ -165,8 +165,9 @@ export const BridgePmControlView: React.FC<BridgePmControlViewProps> = ({
 
   // Speak voice summary
   const handleVoiceBriefing = () => {
+    voiceAgent.unlockAudio();
     const text = `Bridge P and M Cost and Performance Executive Briefing. Question 1: Is the machine available? Mechanical availability is ${simAvailabilityPct} percent against 90 percent target. Question 2: Is it productive? Productive hours are ${simProductiveHours} hours generating ${simTotalOutput.toLocaleString()} ${simMachine === 'piling' ? 'meters of rock piling' : 'units'}. Question 3: Is it fuel efficient? Specific fuel consumption is ${simFuelEfficiency} litres per unit. Question 4: Is it economically justified? Owned cost is approximately ₹${simCostPerProductiveHour.toLocaleString()} per productive hour. Question 5: Is it costing within approved budget? Unit cost is ₹${simCostPerProductiveUnit.toLocaleString()} per unit. All six golden formulas are active.`;
-    voiceAgent.speak(text);
+    voiceAgent.speak(text, { messageId: 'bridge-executive-briefing' });
   };
 
   return (

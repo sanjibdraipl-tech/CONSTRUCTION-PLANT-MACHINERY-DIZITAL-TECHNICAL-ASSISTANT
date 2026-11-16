@@ -14,9 +14,10 @@ import {
   RefreshCw,
   FileCheck,
   Volume2,
+  Play,
+  Pause,
+  RotateCcw,
   Square,
-  Mic,
-  MicOff,
   Headphones,
   Speaker,
 } from 'lucide-react';
@@ -365,37 +366,18 @@ export const TechnicalDiagnosticView: React.FC<TechnicalDiagnosticViewProps> = (
               </div>
             </div>
 
-            {/* Operator Complaint with Voice Input */}
+            {/* Operator Complaint (Text Input Only) */}
             <div>
               <div className="flex items-center justify-between mb-1">
                 <label className="text-slate-300 font-semibold block">
                   Primary Operator Complaint <span className="text-amber-400">*</span>
                 </label>
-                <button
-                  type="button"
-                  onClick={() => {
-                    if (voiceState.isListening) {
-                      voiceAgent.stopListening();
-                    } else {
-                      voiceAgent.startListening((text) => setComplaint(text));
-                    }
-                  }}
-                  className={`flex items-center space-x-1 text-[11px] font-semibold px-2 py-0.5 rounded transition-colors ${
-                    voiceState.isListening
-                      ? 'bg-red-600 text-white animate-pulse'
-                      : 'text-amber-400 hover:text-amber-300 bg-amber-500/10 border border-amber-500/30'
-                  }`}
-                  title="Speak complaint with microphone"
-                >
-                  {voiceState.isListening ? <MicOff className="h-3 w-3" /> : <Mic className="h-3 w-3" />}
-                  <span>{voiceState.isListening ? 'Listening...' : 'Speak Complaint'}</span>
-                </button>
               </div>
               <textarea
                 rows={2}
                 value={complaint}
                 onChange={(e) => setComplaint(e.target.value)}
-                placeholder="What did the operator observe or report? (Type or click Speak Complaint)"
+                placeholder="Describe what the operator observed or reported..."
                 className="w-full rounded-lg border border-slate-700 bg-slate-950 p-2.5 text-white placeholder-slate-600 focus:border-amber-500 focus:outline-none"
               />
             </div>
@@ -606,27 +588,85 @@ export const TechnicalDiagnosticView: React.FC<TechnicalDiagnosticViewProps> = (
                     </button>
                   </div>
 
-                  {/* Listen to Spoken Diagnosis CTA */}
-                  {voiceState.isPlaying ? (
-                    <button
-                      onClick={() => voiceAgent.stop()}
-                      className="flex items-center space-x-1.5 rounded-lg bg-red-950 border border-red-800 px-3 py-1 text-xs font-bold text-red-300 hover:bg-red-900 transition-colors"
-                    >
-                      <Square className="h-3 w-3 fill-current" />
-                      <span>Stop Voice</span>
-                    </button>
-                  ) : (
-                    <button
-                      onClick={() => {
-                        const spokenText = `Technical diagnostic briefing for ${make} ${model}. Problem identified: ${diagnosticResult.problemSummary}. Most probable cause: ${diagnosticResult.probableCauses?.[0]?.cause || 'Under investigation'}. Immediate field action: ${diagnosticResult.immediateAction}. Corrective action: ${diagnosticResult.correctiveAction}. Safety reminder: Always apply Lockout Tagout before opening access panels.`;
-                        voiceAgent.speak(spokenText);
-                      }}
-                      className="flex items-center space-x-1.5 rounded-lg bg-amber-500 text-slate-950 px-3 py-1 text-xs font-bold shadow-md shadow-amber-500/20 hover:bg-amber-400 transition-all cursor-pointer"
-                    >
-                      <Volume2 className="h-3.5 w-3.5 stroke-[2.5]" />
-                      <span>Listen to Voice ({voiceState.audioOutputMode === 'speaker' ? 'Normal Speaker' : 'Headphones'} Gents)</span>
-                    </button>
-                  )}
+                  {/* Audio Playback Controls: Play / Pause / Stop & Replay */}
+                  {(() => {
+                    const diagSpeechId = 'diag-result';
+                    const spokenText = `Technical diagnostic briefing for ${make} ${model}. Problem identified: ${diagnosticResult.problemSummary}. Most probable cause: ${diagnosticResult.probableCauses?.[0]?.cause || 'Under investigation'}. Immediate field action: ${diagnosticResult.immediateAction}. Corrective action: ${diagnosticResult.correctiveAction}. Safety reminder: Always apply Lockout Tagout before opening access panels.`;
+                    const isThisDiag = voiceState.currentMessageId === diagSpeechId;
+                    const isDiagPlaying = isThisDiag && voiceState.isPlaying;
+                    const isDiagPaused = isThisDiag && voiceState.isPaused;
+
+                    return (
+                      <div className="flex items-center gap-1.5">
+                        {isDiagPlaying ? (
+                          <>
+                            <button
+                              type="button"
+                              onClick={() => voiceAgent.pause()}
+                              className="flex items-center space-x-1 rounded-lg bg-amber-500 text-slate-950 px-3 py-1 text-xs font-bold hover:bg-amber-400 transition-colors cursor-pointer"
+                            >
+                              <Pause className="h-3 w-3 fill-current" />
+                              <span>Pause</span>
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => voiceAgent.stop()}
+                              className="flex items-center space-x-1 rounded-lg bg-red-950 border border-red-800 px-3 py-1 text-xs font-bold text-red-300 hover:bg-red-900 transition-colors cursor-pointer"
+                            >
+                              <Square className="h-3 w-3 fill-current" />
+                              <span>Stop</span>
+                            </button>
+                          </>
+                        ) : isDiagPaused ? (
+                          <>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                voiceAgent.unlockAudio();
+                                voiceAgent.resume();
+                              }}
+                              className="flex items-center space-x-1 rounded-lg bg-amber-500 text-slate-950 px-3 py-1 text-xs font-bold hover:bg-amber-400 transition-colors cursor-pointer"
+                            >
+                              <Play className="h-3 w-3 fill-current" />
+                              <span>Play</span>
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => voiceAgent.stop()}
+                              className="flex items-center space-x-1 rounded-lg bg-red-950 border border-red-800 px-3 py-1 text-xs font-bold text-red-300 hover:bg-red-900 transition-colors cursor-pointer"
+                            >
+                              <Square className="h-3 w-3 fill-current" />
+                              <span>Stop</span>
+                            </button>
+                          </>
+                        ) : (
+                          <button
+                            type="button"
+                            onClick={() => {
+                              voiceAgent.unlockAudio();
+                              voiceAgent.speak(spokenText, { messageId: diagSpeechId });
+                            }}
+                            className="flex items-center space-x-1.5 rounded-lg bg-amber-500 text-slate-950 px-3 py-1 text-xs font-bold shadow-md shadow-amber-500/20 hover:bg-amber-400 transition-all cursor-pointer"
+                          >
+                            <Volume2 className="h-3.5 w-3.5 stroke-[2.5]" />
+                            <span>Play Audio</span>
+                          </button>
+                        )}
+                        <button
+                          type="button"
+                          onClick={() => {
+                            voiceAgent.unlockAudio();
+                            voiceAgent.speak(spokenText, { messageId: diagSpeechId });
+                          }}
+                          className="flex items-center space-x-1 rounded-lg bg-slate-950 border border-slate-700 px-2.5 py-1 text-xs font-semibold text-slate-300 hover:border-amber-500/60 hover:text-amber-300 transition-colors cursor-pointer"
+                          title="Replay diagnostic audio"
+                        >
+                          <RotateCcw className="h-3 w-3" />
+                          <span>Replay</span>
+                        </button>
+                      </div>
+                    );
+                  })()}
 
                   <span
                     className={`rounded-full px-2.5 py-0.5 text-xs font-bold border ${

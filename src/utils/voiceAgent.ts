@@ -1,41 +1,54 @@
 /**
- * PLANT AND MACHINERY - AI Voice Agent Audio Engine
+ * PLANT AND MACHINERY - AI Text-Input + Audio-Response Engine
+ * Zero microphone recording or speech-to-text code.
  * Supports:
- * - 🎧 Headphone Mode (Studio Crisp Gents Voice - Near-mic high definition)
- * - 🔊 Normal Speaker Mode (No Headphone Required - Acoustic Field Loudspeaker Gents Voice)
+ * - Dual Response Mode: "Audio + Text Reply" (default) vs "Text Only"
+ * - Audio Output Tuning: Normal Speaker Mode (default, no headphones) vs Headphone Mode
  * - Gents Voice Models: Fenrir (Senior Chief Engineer), Puck (Field Manager), Charon (Technical Specialist)
- * - Real-time Voice-to-Voice Loop: User speaks -> AI diagnoses -> AI immediately answers aloud in Gents voice
+ * - Autoplay-safe unlocking on user Send/Click gesture (AudioContext + shared HTMLAudioElement + speechSynthesis)
+ * - Per-message Play / Pause / Stop / Replay Audio controls with instant WAV caching
  */
 
 export type AudioOutputMode = 'headphone' | 'speaker';
+export type ResponseMode = 'audio-text' | 'text-only';
 export type GentsVoiceType = 'fenrir' | 'puck' | 'charon';
 
 export interface VoiceState {
   isPlaying: boolean;
   isPaused: boolean;
   isLoading: boolean;
-  isListening: boolean;
+  currentMessageId: string | null;
   currentSpeechText: string;
-  voiceName: string; // 'Fenrir' | 'Puck' | 'Charon' | 'Kore'
-  audioOutputMode: AudioOutputMode; // 'headphone' | 'speaker'
+  voiceName: string; // 'Fenrir' | 'Puck' | 'Charon' | 'Zephyr' | 'Kore'
+  audioOutputMode: AudioOutputMode; // 'speaker' | 'headphone'
+  responseMode: ResponseMode; // 'audio-text' | 'text-only'
   source: 'gemini-tts' | 'web-speech' | 'none';
   speedRate: number;
 }
 
 export type VoiceStateListener = (state: VoiceState) => void;
 
+const SILENT_WAV_DATA_URI =
+  'data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAAABkYXRhAgAAAAEA';
+
 class VoiceAgentEngine {
-  private currentAudio: HTMLAudioElement | null = null;
+  private sharedAudio: HTMLAudioElement | null = null;
+  private audioContext: AudioContext | null = null;
+  private activeBufferSource: AudioBufferSourceNode | null = null;
+  private activeBackend: 'html-audio' | 'audio-context' | 'web-speech' | null = null;
+  private playToken = 0;
+  private audioCache: Map<string, { audioData: string; mimeType: string }> = new Map();
   private listeners: Set<VoiceStateListener> = new Set();
-  private recognition: any = null;
+
   private state: VoiceState = {
     isPlaying: false,
     isPaused: false,
     isLoading: false,
-    isListening: false,
+    currentMessageId: null,
     currentSpeechText: '',
     voiceName: 'Fenrir', // Default: Senior Chief P&M Engineer (Gents Voice)
     audioOutputMode: 'speaker', // Default: Normal Speaking Mode (No Headphone Required)
+    responseMode: 'audio-text', // Default: Audio + Text Reply
     source: 'none',
     speedRate: 1.0,
   };
@@ -45,32 +58,95 @@ class VoiceAgentEngine {
       const savedVoice = localStorage.getItem('pm_voice_name');
       if (savedVoice) this.state.voiceName = savedVoice;
 
-      const savedMode = localStorage.getItem('pm_audio_mode') as AudioOutputMode;
-      // Strictly default to Normal Speaking Mode ('speaker') unless user explicitly sets it
-      if (savedMode === 'speaker') {
-        this.state.audioOutputMode = 'speaker';
-      } else {
-        this.state.audioOutputMode = 'speaker';
-        localStorage.setItem('pm_audio_mode', 'speaker');
-      }
+      const savedOutputMode = localStorage.getItem('pm_audio_mode') as AudioOutputMode;
+      this.state.audioOutputMode = savedOutputMode === 'headphone' ? 'headphone' : 'speaker';
+
+      const savedResponseMode = localStorage.getItem('pm_response_mode') as ResponseMode;
+      this.state.responseMode = savedResponseMode === 'text-only' ? 'text-only' : 'audio-text';
 
       const savedRate = localStorage.getItem('pm_voice_rate');
       if (savedRate) this.state.speedRate = parseFloat(savedRate) || 1.0;
+
+      // Pre-load speechSynthesis voice list if available
+      if ('speechSynthesis' in window) {
+        try {
+          window.speechSynthesis.getVoices();
+        } catch (_) {}
+      }
     }
   }
 
   public subscribe(listener: VoiceStateListener): () => void {
     this.listeners.add(listener);
-    listener(this.state);
+    listener({ ...this.state });
     return () => {
       this.listeners.delete(listener);
     };
   }
 
   private notify() {
+    const snapshot = { ...this.state };
     for (const listener of this.listeners) {
-      listener({ ...this.state });
+      listener(snapshot);
     }
+  }
+
+  /**
+   * Synchronously unlock AudioContext, HTMLAudioElement, and window.speechSynthesis
+   * inside a user interaction (e.g. Send button click / Enter key / Play click)
+   * so async audio playback after API responses is never blocked by browser autoplay policies.
+   */
+  public unlockAudio() {
+    if (typeof window === 'undefined') return;
+
+    // 1. Unlock Web Audio API AudioContext
+    try {
+      const AudioCtx = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+      if (AudioCtx) {
+        if (!this.audioContext) {
+          this.audioContext = new AudioCtx();
+        }
+        if (this.audioContext.state === 'suspended') {
+          this.audioContext.resume().catch(() => {});
+        }
+        const buffer = this.audioContext.createBuffer(1, 1, 22050);
+        const source = this.audioContext.createBufferSource();
+        source.buffer = buffer;
+        source.connect(this.audioContext.destination);
+        source.start(0);
+      }
+    } catch (_) {}
+
+    // 2. Unlock persistent HTMLAudioElement
+    try {
+      if (!this.sharedAudio) {
+        this.sharedAudio = new Audio();
+        this.sharedAudio.preload = 'auto';
+      }
+      if (!this.state.isPlaying && !this.state.isPaused && !this.state.isLoading) {
+        this.sharedAudio.src = SILENT_WAV_DATA_URI;
+        const p = this.sharedAudio.play();
+        if (p && typeof p.then === 'function') {
+          p.then(() => {
+            if (!this.state.isPlaying && !this.state.isLoading && this.sharedAudio) {
+              this.sharedAudio.pause();
+            }
+          }).catch(() => {});
+        }
+      }
+    } catch (_) {}
+
+    // 3. Unlock browser SpeechSynthesis
+    try {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.getVoices();
+        if (!window.speechSynthesis.speaking) {
+          const primer = new SpeechSynthesisUtterance('');
+          primer.volume = 0;
+          window.speechSynthesis.speak(primer);
+        }
+      }
+    } catch (_) {}
   }
 
   public setVoiceName(voiceName: string) {
@@ -86,21 +162,35 @@ class VoiceAgentEngine {
     if (typeof window !== 'undefined') {
       localStorage.setItem('pm_audio_mode', mode);
     }
-    // Automatically match voice profile
     if (mode === 'speaker') {
-      // For normal site speaker without headphones: Puck or Fenrir with robust acoustic delivery
-      if (this.state.voiceName === 'Kore') this.state.voiceName = 'Puck';
+      if (this.state.voiceName === 'Kore') this.state.voiceName = 'Fenrir';
     } else {
-      // For headphone mode: Crisp studio Fenrir or Charon
       if (this.state.voiceName === 'Puck') this.state.voiceName = 'Fenrir';
     }
     this.notify();
   }
 
+  public setResponseMode(mode: ResponseMode) {
+    this.state.responseMode = mode;
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('pm_response_mode', mode);
+    }
+    if (mode === 'text-only') {
+      this.stop();
+    } else {
+      this.notify();
+    }
+  }
+
   public setSpeedRate(rate: number) {
     this.state.speedRate = rate;
-    if (this.currentAudio) {
-      this.currentAudio.playbackRate = rate;
+    if (this.sharedAudio) {
+      this.sharedAudio.playbackRate = rate;
+    }
+    if (this.activeBufferSource) {
+      try {
+        this.activeBufferSource.playbackRate.value = rate;
+      } catch (_) {}
     }
     if (typeof window !== 'undefined') {
       localStorage.setItem('pm_voice_rate', rate.toString());
@@ -109,8 +199,7 @@ class VoiceAgentEngine {
   }
 
   /**
-   * Cleans technical markdown tables, headers, and bullet points into natural spoken engineering English
-   * with Indian infrastructure project terminology.
+   * Cleans technical markdown tables, headers, and bullet points into natural spoken engineering English.
    */
   public cleanTextForSpeech(text: string): string {
     if (!text) return '';
@@ -124,7 +213,6 @@ class VoiceAgentEngine {
       .replace(/\s+/g, ' ')
       .trim();
 
-    // Natural Indian Infrastructure & Construction Machinery Terminology
     clean = clean
       .replace(/\bP&M\b/g, 'Plant and Machinery')
       .replace(/\bNHAI\b/g, 'N-H-A-I Highway')
@@ -150,94 +238,203 @@ class VoiceAgentEngine {
   }
 
   /**
-   * Speak technical text aloud using Gemini 3.8 Flash Lite TTS with Web Speech API fallback.
-   * Adapts style and acoustics based on Headphone vs. Normal Speaker Mode.
+   * Speak technical text aloud using Gemini TTS API with unlocked AudioContext/HTMLAudio playback
+   * and automatic Web Speech Synthesis fallback.
    */
   public async speak(
     rawText: string,
     options?: {
+      messageId?: string;
       voiceName?: string;
       outputMode?: AudioOutputMode;
+      forceRefresh?: boolean;
       onStart?: () => void;
       onEnd?: () => void;
-      onError?: (err: any) => void;
+      onError?: (err: unknown) => void;
     }
   ): Promise<void> {
-    this.stop(); // Stop any currently playing audio
+    this.stop();
+    const token = ++this.playToken;
 
     const clean = this.cleanTextForSpeech(rawText);
     if (!clean) return;
 
-    // Use summary portion for fast voice generation if text is extensive
     let speechPrompt = clean;
     if (speechPrompt.length > 750) {
       const sentenceEnd = speechPrompt.indexOf('.', 550);
-      speechPrompt = sentenceEnd !== -1 ? speechPrompt.slice(0, sentenceEnd + 1) : speechPrompt.slice(0, 650) + '...';
+      speechPrompt =
+        sentenceEnd !== -1 ? speechPrompt.slice(0, sentenceEnd + 1) : speechPrompt.slice(0, 650) + '...';
     }
 
     const voice = options?.voiceName || this.state.voiceName || 'Fenrir';
     const mode = options?.outputMode || this.state.audioOutputMode || 'speaker';
+    const messageId = options?.messageId || null;
 
-    // Tailor engineering style prompt based on Headphone vs Loudspeaker mode
     const engineeringStyle =
       mode === 'headphone'
         ? 'Deep, crisp, close-mic authoritative Indian chief plant and machinery engineer speaking into a professional headset. High diction, balanced treble, clear calm delivery.'
-        : 'Punchy, resonant, acoustic loudspeaker delivery for Indian construction site managers listening on phone speaker without headphones. Clear, energetic, high presence and projection.';
+        : 'Normal Speaking Mode: Resonant, loud, clear Indian male Chief Plant and Machinery Engineer speaking naturally through a phone, tablet, or laptop loudspeaker without headphones on an Indian construction site. High acoustic presence and clear diction.';
 
     this.state.isLoading = true;
+    this.state.currentMessageId = messageId;
     this.state.currentSpeechText = speechPrompt;
     this.notify();
 
+    const cacheKey = `${voice}:${mode}:${speechPrompt}`;
+
     try {
-      const res = await fetch('/api/voice/speak', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          text: speechPrompt,
-          voiceName: voice,
-          audioOutputMode: mode,
-          style: engineeringStyle,
-        }),
-      });
+      let cached = !options?.forceRefresh ? this.audioCache.get(cacheKey) : undefined;
 
-      const data = await res.json();
+      if (!cached) {
+        const res = await fetch('/api/voice/speak', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            text: speechPrompt,
+            voiceName: voice,
+            audioOutputMode: mode,
+            style: engineeringStyle,
+          }),
+        });
 
-      if (data.success && data.audioData) {
-        const audio = new Audio(`data:${data.mimeType || 'audio/wav'};base64,${data.audioData}`);
-        audio.playbackRate = this.state.speedRate;
-        this.currentAudio = audio;
+        if (token !== this.playToken) return;
 
-        audio.onplay = () => {
-          this.state.isLoading = false;
-          this.state.isPlaying = true;
-          this.state.isPaused = false;
-          this.state.source = 'gemini-tts';
-          this.notify();
-          options?.onStart?.();
-        };
-
-        audio.onended = () => {
-          this.state.isPlaying = false;
-          this.state.isPaused = false;
-          this.state.isLoading = false;
-          this.currentAudio = null;
-          this.notify();
-          options?.onEnd?.();
-        };
-
-        audio.onerror = (e) => {
-          console.warn('Audio tag playback error, falling back to Web Speech Synthesis:', e);
-          this.fallbackWebSpeech(speechPrompt, mode, options);
-        };
-
-        await audio.play();
-        return;
+        const data = await res.json();
+        if (data.success && data.audioData) {
+          cached = {
+            audioData: data.audioData,
+            mimeType: data.mimeType || 'audio/wav',
+          };
+          if (this.audioCache.size >= 30) {
+            const oldestKey = this.audioCache.keys().next().value;
+            if (oldestKey) this.audioCache.delete(oldestKey);
+          }
+          this.audioCache.set(cacheKey, cached);
+        }
       }
 
-      this.fallbackWebSpeech(speechPrompt, mode, options);
+      if (token !== this.playToken) return;
+
+      if (cached?.audioData) {
+        const played = await this.playWavBase64(cached.audioData, cached.mimeType, token, options);
+        if (played) return;
+      }
+
+      if (token !== this.playToken) return;
+      this.fallbackWebSpeech(speechPrompt, mode, token, options);
     } catch (err) {
+      if (token !== this.playToken) return;
       console.warn('TTS request error, falling back to browser Web Speech API:', err);
-      this.fallbackWebSpeech(speechPrompt, mode, options);
+      this.fallbackWebSpeech(speechPrompt, mode, token, options);
+    }
+  }
+
+  private async playWavBase64(
+    base64Audio: string,
+    mimeType: string,
+    token: number,
+    options?: {
+      onStart?: () => void;
+      onEnd?: () => void;
+      onError?: (err: unknown) => void;
+    }
+  ): Promise<boolean> {
+    // Attempt 1: Unlocked persistent HTMLAudioElement
+    try {
+      if (!this.sharedAudio) {
+        this.sharedAudio = new Audio();
+      }
+      const audio = this.sharedAudio;
+      audio.src = `data:${mimeType};base64,${base64Audio}`;
+      audio.playbackRate = this.state.speedRate;
+
+      audio.onplay = () => {
+        if (token !== this.playToken) return;
+        this.activeBackend = 'html-audio';
+        this.state.isLoading = false;
+        this.state.isPlaying = true;
+        this.state.isPaused = false;
+        this.state.source = 'gemini-tts';
+        this.notify();
+        options?.onStart?.();
+      };
+
+      audio.onended = () => {
+        if (token !== this.playToken) return;
+        this.activeBackend = null;
+        this.state.isPlaying = false;
+        this.state.isPaused = false;
+        this.state.isLoading = false;
+        this.state.currentMessageId = null;
+        this.notify();
+        options?.onEnd?.();
+      };
+
+      audio.onerror = () => {
+        if (token !== this.playToken) return;
+        this.activeBackend = null;
+      };
+
+      await audio.play();
+      return true;
+    } catch (htmlAudioErr) {
+      console.warn('HTMLAudioElement playback blocked or failed, trying unlocked AudioContext:', htmlAudioErr);
+    }
+
+    // Attempt 2: Unlocked Web Audio API AudioContext
+    try {
+      const AudioCtx = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+      if (!AudioCtx) return false;
+
+      if (!this.audioContext) {
+        this.audioContext = new AudioCtx();
+      }
+      if (this.audioContext.state === 'suspended') {
+        await this.audioContext.resume();
+      }
+
+      const binaryStr = atob(base64Audio);
+      const len = binaryStr.length;
+      const bytes = new Uint8Array(len);
+      for (let i = 0; i < len; i++) {
+        bytes[i] = binaryStr.charCodeAt(i);
+      }
+
+      const decoded = await this.audioContext.decodeAudioData(bytes.buffer.slice(0));
+      if (token !== this.playToken) return true;
+
+      const source = this.audioContext.createBufferSource();
+      source.buffer = decoded;
+      source.playbackRate.value = this.state.speedRate;
+      source.connect(this.audioContext.destination);
+
+      this.activeBufferSource = source;
+      this.activeBackend = 'audio-context';
+
+      source.onended = () => {
+        if (token !== this.playToken) return;
+        this.activeBufferSource = null;
+        this.activeBackend = null;
+        this.state.isPlaying = false;
+        this.state.isPaused = false;
+        this.state.isLoading = false;
+        this.state.currentMessageId = null;
+        this.notify();
+        options?.onEnd?.();
+      };
+
+      this.state.isLoading = false;
+      this.state.isPlaying = true;
+      this.state.isPaused = false;
+      this.state.source = 'gemini-tts';
+      this.notify();
+      options?.onStart?.();
+
+      source.start(0);
+      return true;
+    } catch (ctxErr) {
+      console.warn('AudioContext playback failed, falling back to Web Speech Synthesis:', ctxErr);
+      return false;
     }
   }
 
@@ -247,11 +444,13 @@ class VoiceAgentEngine {
   private fallbackWebSpeech(
     text: string,
     mode: AudioOutputMode,
-    options?: { onStart?: () => void; onEnd?: () => void; onError?: (err: any) => void }
+    token: number,
+    options?: { onStart?: () => void; onEnd?: () => void; onError?: (err: unknown) => void }
   ) {
     if (typeof window === 'undefined' || !('speechSynthesis' in window)) {
       this.state.isLoading = false;
       this.state.isPlaying = false;
+      this.state.currentMessageId = null;
       this.notify();
       options?.onError?.(new Error('Speech synthesis is not supported on this browser'));
       return;
@@ -260,14 +459,14 @@ class VoiceAgentEngine {
     window.speechSynthesis.cancel();
 
     const utterance = new SpeechSynthesisUtterance(text);
-    // Adjust rate and pitch based on mode
     utterance.rate = mode === 'speaker' ? Math.max(0.9, this.state.speedRate * 0.95) : this.state.speedRate;
-    utterance.pitch = 0.95; // Slightly deeper gents voice tone
+    utterance.pitch = 0.95;
 
     const voices = window.speechSynthesis.getVoices();
-    // Prioritize male/gents voices (Google UK English Male, Microsoft Ravi/David, Indian English Male)
     const maleGentsVoice =
-      voices.find((v) => v.lang === 'en-IN' && (v.name.toLowerCase().includes('male') || v.name.toLowerCase().includes('ravi'))) ||
+      voices.find(
+        (v) => v.lang === 'en-IN' && (v.name.toLowerCase().includes('male') || v.name.toLowerCase().includes('ravi'))
+      ) ||
       voices.find((v) => v.name.toLowerCase().includes('male') && v.lang.startsWith('en')) ||
       voices.find((v) => v.name.toLowerCase().includes('david') || v.name.toLowerCase().includes('george')) ||
       voices.find((v) => v.lang === 'en-IN') ||
@@ -278,6 +477,8 @@ class VoiceAgentEngine {
     }
 
     utterance.onstart = () => {
+      if (token !== this.playToken) return;
+      this.activeBackend = 'web-speech';
       this.state.isLoading = false;
       this.state.isPlaying = true;
       this.state.isPaused = false;
@@ -287,17 +488,23 @@ class VoiceAgentEngine {
     };
 
     utterance.onend = () => {
+      if (token !== this.playToken) return;
+      this.activeBackend = null;
       this.state.isPlaying = false;
       this.state.isPaused = false;
       this.state.isLoading = false;
+      this.state.currentMessageId = null;
       this.notify();
       options?.onEnd?.();
     };
 
     utterance.onerror = (e) => {
+      if (token !== this.playToken) return;
+      this.activeBackend = null;
       this.state.isPlaying = false;
       this.state.isPaused = false;
       this.state.isLoading = false;
+      this.state.currentMessageId = null;
       this.notify();
       options?.onError?.(e);
     };
@@ -306,12 +513,22 @@ class VoiceAgentEngine {
   }
 
   public pause() {
-    if (this.currentAudio && !this.currentAudio.paused) {
-      this.currentAudio.pause();
+    if (this.activeBackend === 'html-audio' && this.sharedAudio && !this.sharedAudio.paused) {
+      this.sharedAudio.pause();
       this.state.isPlaying = false;
       this.state.isPaused = true;
       this.notify();
-    } else if (typeof window !== 'undefined' && 'speechSynthesis' in window && window.speechSynthesis.speaking) {
+    } else if (this.activeBackend === 'audio-context' && this.audioContext && this.audioContext.state === 'running') {
+      this.audioContext.suspend().catch(() => {});
+      this.state.isPlaying = false;
+      this.state.isPaused = true;
+      this.notify();
+    } else if (
+      this.activeBackend === 'web-speech' &&
+      typeof window !== 'undefined' &&
+      'speechSynthesis' in window &&
+      window.speechSynthesis.speaking
+    ) {
       window.speechSynthesis.pause();
       this.state.isPlaying = false;
       this.state.isPaused = true;
@@ -320,12 +537,22 @@ class VoiceAgentEngine {
   }
 
   public resume() {
-    if (this.currentAudio && this.currentAudio.paused) {
-      this.currentAudio.play();
+    if (this.activeBackend === 'html-audio' && this.sharedAudio && this.sharedAudio.paused) {
+      this.sharedAudio.play().catch(() => {});
       this.state.isPlaying = true;
       this.state.isPaused = false;
       this.notify();
-    } else if (typeof window !== 'undefined' && 'speechSynthesis' in window && window.speechSynthesis.paused) {
+    } else if (this.activeBackend === 'audio-context' && this.audioContext && this.audioContext.state === 'suspended') {
+      this.audioContext.resume().catch(() => {});
+      this.state.isPlaying = true;
+      this.state.isPaused = false;
+      this.notify();
+    } else if (
+      this.activeBackend === 'web-speech' &&
+      typeof window !== 'undefined' &&
+      'speechSynthesis' in window &&
+      window.speechSynthesis.paused
+    ) {
       window.speechSynthesis.resume();
       this.state.isPlaying = true;
       this.state.isPaused = false;
@@ -334,102 +561,42 @@ class VoiceAgentEngine {
   }
 
   public stop() {
-    if (this.currentAudio) {
+    this.playToken++;
+
+    if (this.sharedAudio) {
       try {
-        this.currentAudio.pause();
-        this.currentAudio.currentTime = 0;
-      } catch (e) {}
-      this.currentAudio = null;
+        this.sharedAudio.onplay = null;
+        this.sharedAudio.onended = null;
+        this.sharedAudio.onerror = null;
+        this.sharedAudio.pause();
+        this.sharedAudio.currentTime = 0;
+      } catch (_) {}
+    }
+
+    if (this.activeBufferSource) {
+      try {
+        this.activeBufferSource.onended = null;
+        this.activeBufferSource.stop();
+        this.activeBufferSource.disconnect();
+      } catch (_) {}
+      this.activeBufferSource = null;
+    }
+
+    if (this.audioContext && this.audioContext.state === 'suspended') {
+      this.audioContext.resume().catch(() => {});
     }
 
     if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
-      window.speechSynthesis.cancel();
+      try {
+        window.speechSynthesis.cancel();
+      } catch (_) {}
     }
 
+    this.activeBackend = null;
     this.state.isPlaying = false;
     this.state.isPaused = false;
     this.state.isLoading = false;
-    this.notify();
-  }
-
-  public startListening(
-    onResult: (transcript: string, isFinal: boolean) => void,
-    onEnd?: () => void,
-    onError?: (err: any) => void
-  ): boolean {
-    if (typeof window === 'undefined') return false;
-
-    const SpeechRec = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
-    if (!SpeechRec) {
-      onError?.(new Error('Speech recognition is not supported in this browser. Please use Chrome or Edge.'));
-      return false;
-    }
-
-    this.stopListening();
-    this.stop();
-
-    try {
-      const recognition = new SpeechRec();
-      this.recognition = recognition;
-      recognition.continuous = false;
-      recognition.interimResults = true;
-      recognition.lang = 'en-IN'; // Indian English recognition
-
-      recognition.onstart = () => {
-        this.state.isListening = true;
-        this.notify();
-      };
-
-      recognition.onresult = (event: any) => {
-        let interimTranscript = '';
-        let finalTranscript = '';
-
-        for (let i = event.resultIndex; i < event.results.length; ++i) {
-          if (event.results[i].isFinal) {
-            finalTranscript += event.results[i][0].transcript;
-          } else {
-            interimTranscript += event.results[i][0].transcript;
-          }
-        }
-
-        const text = finalTranscript || interimTranscript;
-        if (text) {
-          onResult(text, Boolean(finalTranscript));
-        }
-      };
-
-      recognition.onerror = (event: any) => {
-        console.warn('Speech recognition error:', event.error);
-        this.state.isListening = false;
-        this.notify();
-        onError?.(event.error);
-      };
-
-      recognition.onend = () => {
-        this.state.isListening = false;
-        this.notify();
-        onEnd?.();
-      };
-
-      recognition.start();
-      return true;
-    } catch (e) {
-      console.error('Failed to start speech recognition:', e);
-      this.state.isListening = false;
-      this.notify();
-      onError?.(e);
-      return false;
-    }
-  }
-
-  public stopListening() {
-    if (this.recognition) {
-      try {
-        this.recognition.stop();
-      } catch (e) {}
-      this.recognition = null;
-    }
-    this.state.isListening = false;
+    this.state.currentMessageId = null;
     this.notify();
   }
 

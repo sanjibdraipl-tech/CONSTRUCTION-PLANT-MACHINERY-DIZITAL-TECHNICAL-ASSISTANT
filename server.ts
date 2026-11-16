@@ -420,52 +420,6 @@ app.post('/api/voice/speak', async (req: Request, res: Response) => {
   }
 });
 
-// AI Voice Transcription (Speech-To-Text) Endpoint
-app.post('/api/voice/transcribe', async (req: Request, res: Response) => {
-  try {
-    const { audioData, mimeType = 'audio/webm' } = req.body;
-    if (!audioData) {
-      return res.status(400).json({ error: 'Audio data is required' });
-    }
-
-    if (ai) {
-      try {
-        const audioPart = {
-          inlineData: {
-            mimeType,
-            data: audioData,
-          },
-        };
-
-        const transcribeResponse = await withTimeout(
-          ai.models.generateContent({
-            model: 'gemini-3.5-transcribe',
-            contents: {
-              parts: [
-                audioPart,
-                { text: 'Transcribe this construction plant and machinery audio query accurately. Only output the spoken words.' },
-              ],
-            },
-          }),
-          8000
-        );
-
-        const text = transcribeResponse.text?.trim();
-        if (text) {
-          return res.json({ success: true, text, source: 'gemini-3.5-transcribe' });
-        }
-      } catch (tErr: any) {
-        console.warn('[Plant and Machinery Server] Audio transcription call failed:', tErr?.message);
-      }
-    }
-
-    return res.status(503).json({ error: 'Transcription unavailable, use browser speech recognition' });
-  } catch (err: any) {
-    console.error('Transcription error:', err);
-    res.status(500).json({ error: 'Audio transcription failed', details: err?.message });
-  }
-});
-
 // Domain-expert fallback generator
 function generateExpertRuleBasedDiagnosis(input: any) {
   const query = `${input.complaint || ''} ${input.symptoms || ''} ${input.errorCode || ''}`.toLowerCase();

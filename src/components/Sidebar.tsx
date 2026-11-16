@@ -75,7 +75,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       items: [
         { id: 'diagnostic', label: 'Technical Diagnostic', icon: Wrench, highlight: true },
         { id: 'ai-assistant', label: 'Plant & Machinery AI Chat', icon: Bot, highlight: true },
-        { id: 'ai-voice', label: 'AI Voice Agent (Hands-Free)', icon: Headphones, highlight: true },
+        { id: 'ai-voice', label: 'AI Audio + Text Desk', icon: Headphones, highlight: true },
       ],
     },
     {

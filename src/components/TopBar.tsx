@@ -187,14 +187,14 @@ export const TopBar: React.FC<TopBarProps> = ({
           <span className="hidden sm:inline">AI Diagnostic</span>
         </button>
 
-        {/* AI Voice Agent CTA */}
+        {/* AI Audio + Text Assistant CTA */}
         <button
           onClick={onOpenVoiceAgent}
           className="flex items-center space-x-1.5 rounded-lg border border-amber-500/40 bg-amber-500/10 px-3 py-1.5 text-xs font-bold text-amber-300 shadow-sm hover:bg-amber-500/20 hover:text-amber-200 transition-all cursor-pointer"
-          title="AI Voice Agent - Talk with Voice & Hear Answers Aloud"
+          title="AI Audio + Text Desk - Type Questions & Hear Answers Aloud"
         >
           <Headphones className="h-3.5 w-3.5 text-amber-400 stroke-[2.5]" />
-          <span className="hidden md:inline">Voice Agent</span>
+          <span className="hidden md:inline">Audio + Text AI</span>
         </button>
 
         {/* Notifications Icon & Dropdown */}

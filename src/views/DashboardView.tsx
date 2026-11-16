@@ -11,12 +11,9 @@ import {
   ExternalLink,
   ChevronRight,
   ShieldAlert,
-  Mic,
-  MicOff,
   Volume2,
 } from 'lucide-react';
 import { Equipment, BreakdownRecord, PmRecord, FuelEntry, KpiMetric } from '../types';
-import { voiceAgent } from '../utils/voiceAgent';
 
 interface DashboardViewProps {
   equipment: Equipment[];
@@ -40,7 +37,6 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
   onNavigate,
 }) => {
   const [quickProblemText, setQuickProblemText] = useState('');
-  const [isMicActive, setIsMicActive] = useState(false);
 
   // Quick stats
   const totalCount = equipment.length;
@@ -353,37 +349,9 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               value={quickProblemText}
               onChange={(e) => setQuickProblemText(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && handleAnalyzeClick()}
-              placeholder={
-                isMicActive
-                  ? 'Listening to microphone... Speak problem now...'
-                  : 'Describe your equipment problem (or click mic to speak)...'
-              }
-              className={`w-full rounded-xl border bg-slate-950 px-4 py-3.5 pr-12 text-sm font-medium text-white placeholder-slate-500 focus:outline-none transition-all shadow-inner ${
-                isMicActive ? 'border-red-500 ring-2 ring-red-500/30' : 'border-slate-700 focus:border-amber-500 focus:ring-1 focus:ring-amber-500'
-              }`}
+              placeholder="Describe your equipment problem or fault code here..."
+              className="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3.5 text-sm font-medium text-white placeholder-slate-500 focus:border-amber-500 focus:ring-1 focus:ring-amber-500 focus:outline-none transition-all shadow-inner"
             />
-            <button
-              type="button"
-              onClick={() => {
-                if (isMicActive) {
-                  voiceAgent.stopListening();
-                  setIsMicActive(false);
-                } else {
-                  setIsMicActive(true);
-                  voiceAgent.startListening(
-                    (text) => setQuickProblemText(text),
-                    () => setIsMicActive(false),
-                    () => setIsMicActive(false)
-                  );
-                }
-              }}
-              className={`absolute right-3 p-1.5 rounded-lg transition-colors cursor-pointer ${
-                isMicActive ? 'bg-red-600 text-white animate-pulse' : 'text-slate-400 hover:text-amber-400 hover:bg-slate-800'
-              }`}
-              title={isMicActive ? 'Stop voice recording' : 'Speak problem using microphone'}
-            >
-              {isMicActive ? <MicOff className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
-            </button>
           </div>
           <button
             onClick={handleAnalyzeClick}

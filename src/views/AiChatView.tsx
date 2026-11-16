@@ -2,23 +2,20 @@ import React, { useState, useRef, useEffect } from 'react';
 import {
   Bot,
   Send,
-  Sparkles,
   User,
-  Wrench,
-  HelpCircle,
-  CheckCircle2,
-  AlertTriangle,
   RotateCcw,
   Volume2,
   VolumeX,
-  Mic,
-  MicOff,
+  Play,
+  Pause,
   Square,
   Headphones,
   Speaker,
+  FileText,
+  Loader2,
 } from 'lucide-react';
 import { Equipment } from '../types';
-import { voiceAgent, VoiceState, AudioOutputMode } from '../utils/voiceAgent';
+import { voiceAgent, VoiceState } from '../utils/voiceAgent';
 
 interface AiChatViewProps {
   equipmentList: Equipment[];
@@ -45,9 +42,9 @@ export const AiChatView: React.FC<AiChatViewProps> = ({
       sender: 'assistant',
       text: `Hello! I am **PLANT AND MACHINERY AI** – your Digital Technical Assistant for Indian Construction Plant & Machinery.
 
-I specialize in **equipment diagnostics, PM schedules, breakdown workflows, fuel variance audits, and owned vs. hired costing** for highway, metro, and plant operations.
+I specialize in **equipment diagnostics, PM schedules, breakdown workflows, fuel variance audits, and owned vs. hired costing** for highway, metro, bridge, and pipeline operations.
 
-How can I assist your P&M team today? You can click any prompt below or type your machinery problem.`,
+Type your question below or click any prompt chip to get an answer in **Audio + Text** (or switch to **Text Only** anytime).`,
       timestamp: 'Just now',
       source: 'plant-and-machinery-engine',
     },
@@ -55,7 +52,6 @@ How can I assist your P&M team today? You can click any prompt below or type you
 
   const [inputQuery, setInputQuery] = useState('');
   const [isTyping, setIsTyping] = useState(false);
-  const [autoSpeak, setAutoSpeak] = useState(true);
   const [voiceState, setVoiceState] = useState<VoiceState>(voiceAgent.getState());
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -119,34 +115,15 @@ How can I assist your P&M team today? You can click any prompt below or type you
     scrollToBottom();
   }, [messages, isTyping]);
 
-  const handleVoiceInput = () => {
-    if (voiceState.isListening) {
-      voiceAgent.stopListening();
-      return;
-    }
-
-    // Hands-free Voice-In -> Voice-Out: ensure autoSpeak is active
-    setAutoSpeak(true);
-
-    voiceAgent.startListening(
-      (text, isFinal) => {
-        setInputQuery(text);
-        if (isFinal) {
-          handleSend(text);
-        }
-      },
-      () => {},
-      (err) => {
-        console.warn('Chat mic error:', err);
-      }
-    );
-  };
-
   const handleSend = async (queryText?: string) => {
     const q = queryText || inputQuery;
-    if (!q.trim()) return;
+    if (!q.trim() || isTyping) return;
 
-    voiceAgent.stop(); // Stop any currently playing audio
+    // Synchronously unlock AudioContext, HTMLAudioElement, and speechSynthesis on user Send gesture
+    voiceAgent.stop();
+    if (voiceState.responseMode === 'audio-text') {
+      voiceAgent.unlockAudio();
+    }
 
     const userMsg: Message = {
       id: `usr-${Date.now()}`,
@@ -178,8 +155,9 @@ How can I assist your P&M team today? You can click any prompt below or type you
       const data = await res.json();
       const replyText = data.reply || 'Analysis completed with Plant & Machinery technical rules.';
 
+      const aiMsgId = `ai-${Date.now()}`;
       const aiMsg: Message = {
-        id: `ai-${Date.now()}`,
+        id: aiMsgId,
         sender: 'assistant',
         text: replyText,
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
@@ -188,24 +166,25 @@ How can I assist your P&M team today? You can click any prompt below or type you
 
       setMessages((prev) => [...prev, aiMsg]);
 
-      // Automatically speak the answer aloud with voice
-      if (autoSpeak) {
-        voiceAgent.speak(replyText);
+      // Automatically speak the answer aloud in Audio + Text mode
+      if (voiceAgent.getState().responseMode === 'audio-text') {
+        voiceAgent.speak(replyText, { messageId: aiMsgId });
       }
     } catch (err) {
       console.error('Chat error:', err);
+      const errId = `err-${Date.now()}`;
       const errorMsg: Message = {
-        id: `err-${Date.now()}`,
+        id: errId,
         sender: 'assistant',
         text: `### Technical Guidance
-Under Indian site operating conditions, we cross-reference your query with the 20 registered equipment units.
+Under Indian site operating conditions, we cross-reference your query with the registered equipment units.
 Please ensure equipment model, HMR, error codes, and field symptoms are noted before executing physical interventions. Always apply Lockout/Tagout (LOTO).`,
         timestamp: 'Now',
         source: 'plant-and-machinery-fallback',
       };
       setMessages((prev) => [...prev, errorMsg]);
-      if (autoSpeak) {
-        voiceAgent.speak(errorMsg.text);
+      if (voiceAgent.getState().responseMode === 'audio-text') {
+        voiceAgent.speak(errorMsg.text, { messageId: errId });
       }
     } finally {
       setIsTyping(false);
@@ -214,8 +193,8 @@ Please ensure equipment model, HMR, error codes, and field symptoms are noted be
 
   return (
     <div className="flex flex-col h-[calc(100vh-8rem)] space-y-4">
-      {/* Title & Voice Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-800 pb-3 gap-3 shrink-0">
+      {/* Title & Mode Toggle Header */}
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between border-b border-slate-800 pb-3 gap-3 shrink-0">
         <div className="flex items-center space-x-2.5">
           <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-amber-500/20 text-amber-400 border border-amber-500/40">
             <Bot className="h-5 w-5" />
@@ -223,8 +202,8 @@ Please ensure equipment model, HMR, error codes, and field symptoms are noted be
           <div>
             <div className="flex items-center space-x-2">
               <h1 className="text-lg font-black text-white">PLANT AND MACHINERY – AI Technical Assistant</h1>
-              <span className="rounded bg-amber-500 text-slate-950 px-1.5 py-0.2 text-[9px] font-black uppercase">
-                Interactive Advisor
+              <span className="rounded bg-amber-500 text-slate-950 px-1.5 py-0.5 text-[9px] font-black uppercase">
+                Text + Audio Desk
               </span>
             </div>
             <p className="text-[11px] text-slate-400">
@@ -233,74 +212,104 @@ Please ensure equipment model, HMR, error codes, and field symptoms are noted be
           </div>
         </div>
 
-        <div className="flex flex-wrap items-center gap-2 self-end sm:self-center">
-          {/* Audio Output Mode Switcher: Normal Speaker vs Headphone (Gents Voice) */}
-          <div className="flex items-center rounded-xl bg-slate-950 p-0.5 border border-slate-800 text-xs">
+        <div className="flex flex-wrap items-center gap-2 self-end lg:self-center">
+          {/* Dual Response Mode Toggle Switch: "Audio + Text Reply" vs "Text Only" */}
+          <div
+            className="flex items-center rounded-xl bg-slate-950 p-0.5 border border-slate-800 text-xs"
+            role="group"
+            aria-label="Response Mode Toggle"
+          >
             <button
-              onClick={() => voiceAgent.setAudioOutputMode('speaker')}
-              className={`flex items-center space-x-1 px-2.5 py-1 rounded-lg font-semibold transition-all cursor-pointer ${
-                voiceState.audioOutputMode === 'speaker'
-                  ? 'bg-amber-500 text-slate-950 font-bold shadow-sm'
+              type="button"
+              onClick={() => {
+                voiceAgent.unlockAudio();
+                voiceAgent.setResponseMode('audio-text');
+              }}
+              className={`flex items-center space-x-1.5 px-2.5 py-1.5 rounded-lg font-bold transition-all cursor-pointer ${
+                voiceState.responseMode === 'audio-text'
+                  ? 'bg-amber-500 text-slate-950 shadow-sm'
                   : 'text-slate-400 hover:text-white'
               }`}
-              title="Normal Speaking Mode (No Headphone Required) - Loudspeaker Gents Voice for noisy field sites"
+              title="Speaks every answer aloud and displays text on screen"
             >
-              <Speaker className="h-3.5 w-3.5" />
-              <span className="hidden md:inline">Normal Speaking Mode</span>
+              <Volume2 className="h-3.5 w-3.5 stroke-[2.5]" />
+              <span>Audio + Text Reply</span>
             </button>
             <button
-              onClick={() => voiceAgent.setAudioOutputMode('headphone')}
-              className={`flex items-center space-x-1 px-2.5 py-1 rounded-lg font-semibold transition-all cursor-pointer ${
-                voiceState.audioOutputMode === 'headphone'
-                  ? 'bg-amber-500 text-slate-950 font-bold shadow-sm'
+              type="button"
+              onClick={() => voiceAgent.setResponseMode('text-only')}
+              className={`flex items-center space-x-1.5 px-2.5 py-1.5 rounded-lg font-bold transition-all cursor-pointer ${
+                voiceState.responseMode === 'text-only'
+                  ? 'bg-slate-200 text-slate-950 shadow-sm'
                   : 'text-slate-400 hover:text-white'
               }`}
-              title="Headphone Mode - Studio Crisp Gents Voice for headphones and headsets"
+              title="Silent text-only chat when quiet reading is needed"
             >
-              <Headphones className="h-3.5 w-3.5" />
-              <span className="hidden md:inline">Headphone Voice</span>
+              <FileText className="h-3.5 w-3.5 stroke-[2.5]" />
+              <span>Text Only</span>
             </button>
           </div>
 
-          {/* Auto-Speak Toggle */}
-          <button
-            onClick={() => setAutoSpeak(!autoSpeak)}
-            className={`flex items-center space-x-1.5 rounded-lg border px-2.5 py-1 text-xs font-semibold transition-colors ${
-              autoSpeak
-                ? 'border-amber-500/60 bg-amber-500/15 text-amber-300'
-                : 'border-slate-800 bg-slate-900 text-slate-400 hover:text-slate-300'
-            }`}
-            title="Auto-speak answers with voice output"
-          >
-            {autoSpeak ? <Volume2 className="h-3.5 w-3.5 text-amber-400" /> : <VolumeX className="h-3.5 w-3.5" />}
-            <span className="hidden sm:inline">Voice Answers: {autoSpeak ? 'ON' : 'OFF'}</span>
-          </button>
+          {/* Audio Output Mode Switcher: Normal Speaking Mode vs Headphone Mode */}
+          <div className="flex items-center rounded-xl bg-slate-950 p-0.5 border border-slate-800 text-xs">
+            <button
+              type="button"
+              onClick={() => voiceAgent.setAudioOutputMode('speaker')}
+              className={`flex items-center space-x-1 px-2.5 py-1.5 rounded-lg font-semibold transition-all cursor-pointer ${
+                voiceState.audioOutputMode === 'speaker'
+                  ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40 font-bold'
+                  : 'text-slate-400 hover:text-white'
+              }`}
+              title="Normal Speaking Mode (No Headphone Required) - Loudspeaker Gents Voice"
+            >
+              <Speaker className="h-3.5 w-3.5" />
+              <span className="hidden xl:inline">Normal Speaker</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => voiceAgent.setAudioOutputMode('headphone')}
+              className={`flex items-center space-x-1 px-2.5 py-1.5 rounded-lg font-semibold transition-all cursor-pointer ${
+                voiceState.audioOutputMode === 'headphone'
+                  ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40 font-bold'
+                  : 'text-slate-400 hover:text-white'
+              }`}
+              title="Headphone Mode - Studio Crisp Gents Voice"
+            >
+              <Headphones className="h-3.5 w-3.5" />
+              <span className="hidden xl:inline">Headphone</span>
+            </button>
+          </div>
 
-          {/* Dedicated Voice Agent Launcher */}
+          {/* Dedicated Audio + Text Assistant Modal Launcher */}
           {onOpenVoiceAgent && (
             <button
-              onClick={onOpenVoiceAgent}
-              className="flex items-center space-x-1.5 rounded-lg bg-gradient-to-r from-amber-500 to-amber-600 px-3 py-1 text-xs font-bold text-slate-950 shadow-sm hover:from-amber-400 hover:to-amber-500 transition-all cursor-pointer"
-              title="Launch full AI Voice Agent modal"
+              type="button"
+              onClick={() => {
+                voiceAgent.unlockAudio();
+                onOpenVoiceAgent();
+              }}
+              className="flex items-center space-x-1.5 rounded-lg bg-gradient-to-r from-amber-500 to-amber-600 px-3 py-1.5 text-xs font-bold text-slate-950 shadow-sm hover:from-amber-400 hover:to-amber-500 transition-all cursor-pointer"
+              title="Open Audio + Text Assistant Studio"
             >
-              <Headphones className="h-3.5 w-3.5 stroke-[2.5]" />
-              <span>Voice Agent Mode</span>
+              <Volume2 className="h-3.5 w-3.5 stroke-[2.5]" />
+              <span>Audio Studio</span>
             </button>
           )}
 
           <button
+            type="button"
             onClick={() => {
               voiceAgent.stop();
               setMessages([
                 {
                   id: 'msg-reset',
                   sender: 'assistant',
-                  text: 'Conversation reset. How can I assist with your P&M operations?',
+                  text: 'Conversation reset. Type your Plant & Machinery question below to continue.',
                   timestamp: 'Just now',
                 },
               ]);
             }}
-            className="flex items-center space-x-1 rounded-lg bg-slate-900 border border-slate-800 px-2.5 py-1 text-xs text-slate-400 hover:text-white"
+            className="flex items-center space-x-1 rounded-lg bg-slate-900 border border-slate-800 px-2.5 py-1.5 text-xs text-slate-400 hover:text-white cursor-pointer"
           >
             <RotateCcw className="h-3 w-3" />
             <span>Reset</span>
@@ -311,7 +320,10 @@ Please ensure equipment model, HMR, error codes, and field symptoms are noted be
       {/* Messages Thread Container */}
       <div className="flex-1 overflow-y-auto rounded-2xl border border-slate-800 bg-slate-900/60 p-4 space-y-4 shadow-inner">
         {messages.map((m) => {
-          const isThisSpeaking = voiceState.isPlaying && voiceState.currentSpeechText.includes(m.text.slice(0, 30));
+          const isCurrentMessage = voiceState.currentMessageId === m.id;
+          const isThisLoading = isCurrentMessage && voiceState.isLoading;
+          const isThisPlaying = isCurrentMessage && voiceState.isPlaying;
+          const isThisPaused = isCurrentMessage && voiceState.isPaused;
 
           return (
             <div
@@ -344,36 +356,113 @@ Please ensure equipment model, HMR, error codes, and field symptoms are noted be
                 </div>
 
                 <div
-                  className={`mt-2 flex items-center justify-between text-[10px] pt-2 border-t ${
+                  className={`mt-3 flex flex-wrap items-center justify-between gap-2 text-[10px] pt-2.5 border-t ${
                     m.sender === 'user' ? 'border-amber-600 text-slate-900' : 'border-slate-800 text-slate-400'
                   }`}
                 >
                   <div className="flex items-center space-x-2">
                     <span>{m.timestamp}</span>
                     {m.source && <span className="font-mono text-slate-500">[{m.source}]</span>}
+                    {m.sender === 'assistant' && voiceState.responseMode === 'text-only' && (
+                      <span className="inline-flex items-center space-x-1 rounded bg-slate-900 px-1.5 py-0.5 text-[9px] text-slate-400 border border-slate-800">
+                        <VolumeX className="h-2.5 w-2.5" />
+                        <span>Silent Mode</span>
+                      </span>
+                    )}
                   </div>
 
-                  {/* Audio Speech Controls for Assistant Messages */}
+                  {/* Audio Playback Controls on Every AI Message Bubble: Play / Pause / Stop + Replay Audio */}
                   {m.sender === 'assistant' && (
-                    <div className="flex items-center space-x-1.5">
-                      {isThisSpeaking ? (
-                        <button
-                          onClick={() => voiceAgent.stop()}
-                          className="flex items-center space-x-1 rounded-md bg-red-950 border border-red-800 px-2 py-0.5 text-[10px] font-bold text-red-300 hover:bg-red-900 transition-colors"
-                        >
-                          <Square className="h-2.5 w-2.5 fill-current" />
-                          <span>Stop Voice</span>
-                        </button>
+                    <div className="flex flex-wrap items-center gap-1.5">
+                      {isThisLoading ? (
+                        <>
+                          <span className="inline-flex items-center space-x-1 rounded-md bg-amber-500/15 border border-amber-500/30 px-2 py-1 text-[10px] font-bold text-amber-300">
+                            <Loader2 className="h-2.5 w-2.5 animate-spin" />
+                            <span>Generating Audio...</span>
+                          </span>
+                          <button
+                            type="button"
+                            onClick={() => voiceAgent.stop()}
+                            className="flex items-center space-x-1 rounded-md bg-red-950 border border-red-800 px-2 py-1 text-[10px] font-bold text-red-300 hover:bg-red-900 transition-colors cursor-pointer"
+                            title="Stop audio generation"
+                          >
+                            <Square className="h-2.5 w-2.5 fill-current" />
+                            <span>Stop</span>
+                          </button>
+                        </>
+                      ) : isThisPlaying ? (
+                        <>
+                          <button
+                            type="button"
+                            onClick={() => voiceAgent.pause()}
+                            className="flex items-center space-x-1 rounded-md bg-amber-500 text-slate-950 px-2.5 py-1 text-[10px] font-bold hover:bg-amber-400 transition-colors cursor-pointer"
+                            title="Pause voice mid-sentence"
+                          >
+                            <Pause className="h-2.5 w-2.5 fill-current" />
+                            <span>Pause</span>
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => voiceAgent.stop()}
+                            className="flex items-center space-x-1 rounded-md bg-red-950 border border-red-800 px-2.5 py-1 text-[10px] font-bold text-red-300 hover:bg-red-900 transition-colors cursor-pointer"
+                            title="Stop speaking"
+                          >
+                            <Square className="h-2.5 w-2.5 fill-current" />
+                            <span>Stop</span>
+                          </button>
+                        </>
+                      ) : isThisPaused ? (
+                        <>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              voiceAgent.unlockAudio();
+                              voiceAgent.resume();
+                            }}
+                            className="flex items-center space-x-1 rounded-md bg-amber-500 text-slate-950 px-2.5 py-1 text-[10px] font-bold hover:bg-amber-400 transition-colors cursor-pointer"
+                            title="Resume voice playback"
+                          >
+                            <Play className="h-2.5 w-2.5 fill-current" />
+                            <span>Play</span>
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => voiceAgent.stop()}
+                            className="flex items-center space-x-1 rounded-md bg-red-950 border border-red-800 px-2.5 py-1 text-[10px] font-bold text-red-300 hover:bg-red-900 transition-colors cursor-pointer"
+                            title="Stop playback"
+                          >
+                            <Square className="h-2.5 w-2.5 fill-current" />
+                            <span>Stop</span>
+                          </button>
+                        </>
                       ) : (
                         <button
-                          onClick={() => voiceAgent.speak(m.text)}
-                          className="flex items-center space-x-1 rounded-md bg-slate-900 border border-slate-700 px-2 py-0.5 text-[10px] font-bold text-amber-400 hover:bg-amber-500 hover:text-slate-950 transition-colors cursor-pointer"
-                          title="Speak this answer aloud"
+                          type="button"
+                          onClick={() => {
+                            voiceAgent.unlockAudio();
+                            voiceAgent.speak(m.text, { messageId: m.id });
+                          }}
+                          className="flex items-center space-x-1 rounded-md bg-slate-900 border border-slate-700 px-2.5 py-1 text-[10px] font-bold text-amber-400 hover:bg-amber-500 hover:text-slate-950 transition-colors cursor-pointer"
+                          title="Play audio response"
                         >
-                          <Volume2 className="h-2.5 w-2.5" />
-                          <span>Speak Answer</span>
+                          <Play className="h-2.5 w-2.5 fill-current" />
+                          <span>Play</span>
                         </button>
                       )}
+
+                      {/* Always provide Replay Audio button on every AI message bubble */}
+                      <button
+                        type="button"
+                        onClick={() => {
+                          voiceAgent.unlockAudio();
+                          voiceAgent.speak(m.text, { messageId: m.id });
+                        }}
+                        className="flex items-center space-x-1 rounded-md bg-slate-900 border border-slate-700 px-2.5 py-1 text-[10px] font-semibold text-slate-300 hover:border-amber-500/60 hover:text-amber-300 transition-colors cursor-pointer"
+                        title="Replay this answer aloud from the beginning"
+                      >
+                        <RotateCcw className="h-2.5 w-2.5" />
+                        <span>Replay Audio</span>
+                      </button>
                     </div>
                   )}
                 </div>
@@ -410,6 +499,7 @@ Please ensure equipment model, HMR, error codes, and field symptoms are noted be
           ).map((v) => (
             <button
               key={v.id}
+              type="button"
               onClick={() => setSelectedVertical(v.id)}
               className={`shrink-0 px-2.5 py-0.5 rounded-full font-bold transition-all cursor-pointer ${
                 selectedVertical === v.id
@@ -427,6 +517,7 @@ Please ensure equipment model, HMR, error codes, and field symptoms are noted be
           {verticalPrompts[selectedVertical]?.map((prompt, idx) => (
             <button
               key={idx}
+              type="button"
               onClick={() => handleSend(prompt)}
               className="shrink-0 rounded-lg bg-slate-900 border border-slate-800 px-2.5 py-1 text-[11px] text-slate-300 hover:border-amber-500/50 hover:text-amber-300 transition-colors cursor-pointer"
             >
@@ -436,49 +527,32 @@ Please ensure equipment model, HMR, error codes, and field symptoms are noted be
         </div>
       </div>
 
-      {/* Input Form with Microphone Voice Input */}
-      <div className="shrink-0 flex items-center space-x-2">
-        <div className="relative flex-1 flex items-center">
-          <input
-            type="text"
-            value={inputQuery}
-            onChange={(e) => setInputQuery(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-            placeholder={
-              voiceState.isListening
-                ? 'Listening to microphone... Speak now...'
-                : 'Ask Plant & Machinery AI anything, or click microphone to speak...'
-            }
-            className={`w-full rounded-xl border bg-slate-900 px-4 py-3 pr-12 text-xs text-white placeholder-slate-500 focus:outline-none transition-all ${
-              voiceState.isListening
-                ? 'border-red-500 ring-2 ring-red-500/20'
-                : 'border-slate-700 focus:border-amber-500 focus:ring-1 focus:ring-amber-500'
-            }`}
-          />
-
-          {/* Microphone Speech Recognition Button */}
-          <button
-            type="button"
-            onClick={handleVoiceInput}
-            className={`absolute right-2 p-1.5 rounded-lg transition-colors cursor-pointer ${
-              voiceState.isListening
-                ? 'bg-red-600 text-white animate-pulse'
-                : 'text-slate-400 hover:bg-slate-800 hover:text-amber-400'
-            }`}
-            title={voiceState.isListening ? 'Stop listening' : 'Speak with microphone'}
-          >
-            {voiceState.isListening ? <MicOff className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
-          </button>
-        </div>
+      {/* Text Chat Input Box & Send Button Only */}
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleSend();
+        }}
+        className="shrink-0 flex items-center space-x-2"
+      >
+        <input
+          type="text"
+          value={inputQuery}
+          onChange={(e) => setInputQuery(e.target.value)}
+          placeholder="Type your Plant & Machinery question here..."
+          className="flex-1 rounded-xl border border-slate-700 bg-slate-900 px-4 py-3 text-xs text-white placeholder-slate-500 focus:border-amber-500 focus:outline-none focus:ring-1 focus:ring-amber-500 transition-all"
+        />
 
         <button
-          onClick={() => handleSend()}
+          type="submit"
           disabled={!inputQuery.trim() || isTyping}
-          className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-500 text-slate-950 hover:bg-amber-400 disabled:opacity-40 transition-colors shadow-md shadow-amber-500/20 cursor-pointer shrink-0"
+          className="flex h-10 items-center justify-center space-x-1.5 rounded-xl bg-amber-500 px-4 text-xs font-bold text-slate-950 hover:bg-amber-400 disabled:opacity-40 transition-colors shadow-md shadow-amber-500/20 cursor-pointer shrink-0"
+          title="Send message"
         >
           <Send className="h-4 w-4 stroke-[2.5]" />
+          <span className="hidden sm:inline">Send</span>
         </button>
-      </div>
+      </form>
     </div>
   );
 };

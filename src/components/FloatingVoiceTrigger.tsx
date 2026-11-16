@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Mic, Volume2, Square, Headphones, Sparkles, X } from 'lucide-react';
+import { Volume2, Square } from 'lucide-react';
 import { voiceAgent, VoiceState } from '../utils/voiceAgent';
 
 interface FloatingVoiceTriggerProps {
@@ -30,9 +30,10 @@ export const FloatingVoiceTrigger: React.FC<FloatingVoiceTriggerProps> = ({ onOp
             AI Speaking Answer...
           </span>
           <button
+            type="button"
             onClick={() => voiceAgent.stop()}
-            className="rounded-full bg-red-950 p-1 text-red-300 hover:bg-red-900 transition-colors"
-            title="Stop Speech"
+            className="rounded-full bg-red-950 p-1 text-red-300 hover:bg-red-900 transition-colors cursor-pointer"
+            title="Stop Audio"
           >
             <Square className="h-3 w-3" />
           </button>
@@ -41,28 +42,23 @@ export const FloatingVoiceTrigger: React.FC<FloatingVoiceTriggerProps> = ({ onOp
 
       {/* Main Trigger Orb */}
       <button
-        onClick={onOpenVoiceAgent}
+        type="button"
+        onClick={() => {
+          voiceAgent.unlockAudio();
+          onOpenVoiceAgent();
+        }}
         className={`group relative flex h-13 w-13 items-center justify-center rounded-full shadow-2xl transition-all duration-300 cursor-pointer ${
-          voiceState.isListening
-            ? 'bg-red-600 ring-4 ring-red-500/40 animate-pulse text-white'
-            : voiceState.isPlaying
+          voiceState.isPlaying
             ? 'bg-gradient-to-tr from-amber-500 via-orange-500 to-amber-600 ring-4 ring-amber-500/30 text-slate-950'
             : 'bg-gradient-to-tr from-amber-500 via-orange-500 to-amber-600 hover:scale-105 text-slate-950 shadow-amber-500/30'
         }`}
-        title="Open AI Voice Agent (Talk with Voice & Hear Answers Aloud)"
+        title="Open AI Audio + Text Assistant Desk"
       >
-        {voiceState.isListening ? (
-          <Mic className="h-6 w-6 stroke-[2.5]" />
-        ) : voiceState.isPlaying ? (
-          <Volume2 className="h-6 w-6 stroke-[2.5] animate-pulse" />
-        ) : (
-          <Headphones className="h-6 w-6 stroke-[2.5]" />
-        )}
+        <Volume2 className={`h-6 w-6 stroke-[2.5] ${voiceState.isPlaying ? 'animate-pulse' : ''}`} />
 
-        {/* Pulse ring */}
+        {/* Badge */}
         <span className="absolute -top-1 -right-1 flex h-4 w-4">
-          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-amber-400 opacity-75" />
-          <span className="relative inline-flex h-4 w-4 rounded-full bg-amber-500 text-[9px] font-black items-center justify-center text-slate-950">
+          <span className="relative inline-flex h-4 w-4 rounded-full bg-amber-500 text-[9px] font-black items-center justify-center text-slate-950 ring-2 ring-slate-950">
             AI
           </span>
         </span>
